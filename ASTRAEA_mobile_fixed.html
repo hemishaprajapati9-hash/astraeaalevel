@@ -1,0 +1,3541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ASTRAEA</title>
+
+<!-- ASTRAEA ✦ favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23BBA7FF' d='M50 3l8.7 37.3L97 50l-38.3 9.7L50 97l-8.7-37.3L3 50l38.3-9.7z'/%3E%3Cpath fill='%238EDFF5' d='M50 20l4 26 26 4-26 4-4 26-4-26-26-4 26-4z'/%3E%3C/svg%3E">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --bg:#0F1221;
+  --bg2:#11152A;
+  --panel:#181C30;
+  --panel2:#1D233B;
+  --panel3:#202640;
+  --border:#303653;
+  --border2:#3A4264;
+  --text:#F7F5FF;
+  --muted:#A9ADC3;
+  --soft:#777D9A;
+  --lav:#BBA7FF;
+  --violet:#8D7CFF;
+  --ice:#8EDFF5;
+  --good:#8DE2B0;
+  --warn:#FFD98A;
+  --bad:#FF9BAA;
+  --shadow:0 20px 70px rgba(0,0,0,.24);
+  --radius:20px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;min-height:100%;overflow-x:hidden}
+body{overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.app{min-height:100vh;min-height:100dvh}
+.main{min-height:100vh;min-height:100dvh}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 15% 10%,rgba(141,124,255,.12),transparent 28%),
+    radial-gradient(circle at 85% 20%,rgba(142,223,245,.08),transparent 25%),
+    linear-gradient(135deg,#0F1221,#10142A 55%,#0F1221);
+  color:var(--text);
+  font-family:"DM Sans",sans-serif;
+  min-height:100vh;
+  letter-spacing:.01em;
+}
+
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+
+.app{
+  display:grid;
+  grid-template-columns:270px 1fr;
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  width:270px;
+  background:rgba(15,18,33,.88);
+  backdrop-filter:blur(22px);
+  border-right:1px solid rgba(187,167,255,.14);
+  padding:25px 17px;
+  z-index:20;
+  overflow-y:auto;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  padding:5px 8px 25px;
+}
+
+.brand-star{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  color:var(--lav);
+  font-size:27px;
+  text-shadow:0 0 25px rgba(187,167,255,.7);
+}
+
+.brand h1{
+  margin:0;
+  font-family:"Manrope",sans-serif;
+  font-size:21px;
+  letter-spacing:.13em;
+  font-weight:800;
+}
+
+.brand small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:3px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+
+.nav-label{
+  color:#686F8B;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.16em;
+  padding:15px 11px 8px;
+  text-transform:uppercase;
+}
+
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.nav button{
+  border:1px solid transparent;
+  background:transparent;
+  color:var(--muted);
+  text-align:left;
+  padding:12px 13px;
+  border-radius:13px;
+  transition:.2s;
+  font-size:13px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.nav button:hover{
+  background:rgba(187,167,255,.07);
+  color:var(--text);
+}
+
+.nav button.active{
+  color:var(--text);
+  background:linear-gradient(90deg,rgba(187,167,255,.14),rgba(142,223,245,.05));
+  border-color:rgba(187,167,255,.15);
+  box-shadow:inset 3px 0 0 var(--lav);
+}
+
+.nav-icon{
+  width:20px;
+  text-align:center;
+  color:var(--lav);
+}
+
+.sidebar-bottom{
+  margin-top:25px;
+  padding:14px;
+  border-radius:16px;
+  background:linear-gradient(145deg,rgba(187,167,255,.08),rgba(142,223,245,.04));
+  border:1px solid var(--border);
+}
+
+.sidebar-bottom p{
+  margin:0 0 5px;
+  font-size:11px;
+  color:var(--muted);
+}
+
+.sidebar-bottom strong{
+  font-family:"Manrope";
+  font-size:14px;
+}
+
+/* MAIN */
+.main{
+  grid-column:2;
+  min-width:0;
+}
+
+.topbar{
+  height:72px;
+  position:sticky;
+  top:0;
+  z-index:15;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 34px;
+  background:rgba(15,18,33,.76);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(187,167,255,.1);
+}
+
+.page-title{
+  font-family:"Manrope";
+  font-size:15px;
+  font-weight:700;
+}
+
+.page-sub{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:2px;
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.btn{
+  border:1px solid var(--border2);
+  color:var(--text);
+  background:rgba(29,35,59,.8);
+  padding:10px 14px;
+  border-radius:12px;
+  transition:.2s;
+}
+
+.btn:hover{
+  border-color:var(--lav);
+  transform:translateY(-1px);
+}
+
+.btn.primary{
+  background:linear-gradient(135deg,var(--lav),var(--violet));
+  color:#111326;
+  border:none;
+  font-weight:700;
+}
+
+.btn.ghost{
+  background:transparent;
+}
+
+.content{
+  padding:32px;
+  max-width:1600px;
+  margin:auto;
+}
+
+.view{display:none}
+.view.active{display:block}
+
+/* TYPOGRAPHY */
+h2,h3,h4{
+  font-family:"Manrope",sans-serif;
+  margin-top:0;
+}
+
+h2{
+  font-size:29px;
+  margin-bottom:7px;
+}
+
+h3{font-size:17px}
+p{line-height:1.65}
+
+.subtitle{
+  color:var(--muted);
+  margin:0 0 26px;
+  font-size:14px;
+}
+
+/* HERO */
+.hero{
+  position:relative;
+  overflow:hidden;
+  min-height:245px;
+  border:1px solid var(--border);
+  border-radius:26px;
+  padding:34px;
+  background:
+    radial-gradient(circle at 88% 15%,rgba(142,223,245,.15),transparent 25%),
+    radial-gradient(circle at 65% 90%,rgba(141,124,255,.18),transparent 32%),
+    linear-gradient(135deg,#1A2038,#171B31);
+  box-shadow:var(--shadow);
+}
+
+.hero:after{
+  content:"✦";
+  position:absolute;
+  right:65px;
+  top:28px;
+  font-size:125px;
+  color:rgba(187,167,255,.06);
+  transform:rotate(12deg);
+}
+
+.eyebrow{
+  color:var(--ice);
+  font-size:10px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  margin-bottom:12px;
+}
+
+.hero h2{
+  font-size:35px;
+  max-width:700px;
+  margin-bottom:12px;
+}
+
+.hero-quote{
+  color:#D9D8EA;
+  max-width:700px;
+  font-size:15px;
+  line-height:1.8;
+  font-style:italic;
+}
+
+.quote-author{
+  color:var(--lav);
+  font-size:11px;
+  margin-top:10px;
+  font-style:normal;
+}
+
+.grid{
+  display:grid;
+  gap:18px;
+}
+
+.stats-grid{
+  grid-template-columns:repeat(4,1fr);
+  margin-top:20px;
+}
+
+.two-grid{
+  grid-template-columns:1.35fr .9fr;
+  margin-top:20px;
+}
+
+.three-grid{
+  grid-template-columns:repeat(3,1fr);
+}
+
+.card{
+  background:linear-gradient(145deg,rgba(24,28,48,.95),rgba(29,35,59,.85));
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:22px;
+  box-shadow:0 12px 45px rgba(0,0,0,.13);
+}
+
+.stat-number{
+  font-family:"Manrope";
+  font-size:29px;
+  font-weight:800;
+  margin:5px 0;
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.stat-icon{
+  color:var(--lav);
+  font-size:17px;
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:16px;
+}
+
+.section-head h3{margin:0}
+
+/* PROGRESS */
+.progress{
+  width:100%;
+  height:8px;
+  background:#111528;
+  border-radius:99px;
+  overflow:hidden;
+}
+
+.progress > div{
+  height:100%;
+  border-radius:99px;
+  background:linear-gradient(90deg,var(--lav),var(--ice));
+  transition:width .5s ease;
+}
+
+.progress-row{
+  margin:14px 0;
+}
+
+.progress-meta{
+  display:flex;
+  justify-content:space-between;
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:7px;
+}
+
+/* MISSIONS */
+.mission{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:15px;
+  padding:15px 0;
+  border-bottom:1px solid rgba(48,54,83,.6);
+}
+
+.mission:last-child{border-bottom:0}
+
+.mission h4{
+  margin:0 0 5px;
+  font-size:14px;
+}
+
+.mission p{
+  margin:0;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.badge{
+  padding:5px 9px;
+  border-radius:99px;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.05em;
+  white-space:nowrap;
+}
+
+.badge.good{background:rgba(141,226,176,.1);color:var(--good)}
+.badge.warn{background:rgba(255,217,138,.1);color:var(--warn)}
+.badge.bad{background:rgba(255,155,170,.1);color:var(--bad)}
+.badge.info{background:rgba(142,223,245,.1);color:var(--ice)}
+.badge.lav{background:rgba(187,167,255,.1);color:var(--lav)}
+
+/* AETHER */
+.aether{
+  background:
+    radial-gradient(circle at 100% 0,rgba(142,223,245,.11),transparent 30%),
+    radial-gradient(circle at 0 100%,rgba(187,167,255,.11),transparent 35%),
+    var(--panel);
+}
+
+.aether-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.aether-orb{
+  width:32px;
+  height:32px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--lav),var(--ice));
+  color:#101325;
+  font-weight:900;
+  box-shadow:0 0 30px rgba(187,167,255,.25);
+}
+
+/* TABLE */
+.table-wrap{
+  overflow-x:auto;
+  border:1px solid var(--border);
+  border-radius:18px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:650px;
+}
+
+th,td{
+  text-align:left;
+  padding:14px 16px;
+  border-bottom:1px solid rgba(48,54,83,.55);
+  font-size:12px;
+}
+
+th{
+  color:var(--muted);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  background:#161A2C;
+}
+
+tr:last-child td{border-bottom:0}
+
+.clickable{cursor:pointer}
+.clickable:hover td{background:rgba(187,167,255,.035)}
+
+/* FORMS */
+input,select,textarea{
+  width:100%;
+  border:1px solid var(--border2);
+  background:#12172A;
+  color:var(--text);
+  border-radius:11px;
+  padding:11px 12px;
+  outline:none;
+}
+
+input:focus,select:focus,textarea:focus{
+  border-color:var(--lav);
+  box-shadow:0 0 0 3px rgba(187,167,255,.08);
+}
+
+textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+label{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:7px;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+
+.form-grid.three{grid-template-columns:repeat(3,1fr)}
+
+.field{margin-bottom:14px}
+
+.actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:18px;
+}
+
+/* SUBJECTS */
+.subject-card{
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.subject-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(187,167,255,.35);
+}
+
+.subject-code{
+  color:var(--ice);
+  font-size:10px;
+  letter-spacing:.12em;
+  font-weight:700;
+}
+
+.subject-name{
+  font-family:"Manrope";
+  font-size:19px;
+  font-weight:700;
+  margin:7px 0 15px;
+}
+
+.mastery-big{
+  font-family:"Manrope";
+  font-size:27px;
+  font-weight:800;
+}
+
+/* SYLLABUS */
+.topic{
+  padding:15px 0;
+  border-bottom:1px solid rgba(48,54,83,.55);
+}
+
+.topic:last-child{border-bottom:0}
+
+.topic-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.topic-name{
+  font-weight:600;
+  font-size:13px;
+}
+
+.topic-sub{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:4px;
+  line-height:1.6;
+}
+
+.slider{
+  width:150px;
+  accent-color:var(--lav);
+}
+
+/* CALENDAR */
+.calendar{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  border:1px solid var(--border);
+  border-radius:18px;
+  overflow:hidden;
+}
+
+.cal-head{
+  background:#15192B;
+  padding:11px;
+  color:var(--muted);
+  font-size:10px;
+  text-align:center;
+  font-weight:700;
+}
+
+.cal-day{
+  min-height:100px;
+  padding:9px;
+  border-right:1px solid rgba(48,54,83,.45);
+  border-top:1px solid rgba(48,54,83,.45);
+}
+
+.cal-day-num{
+  font-size:11px;
+  color:var(--muted);
+}
+
+.cal-event{
+  margin-top:7px;
+  border-radius:7px;
+  padding:5px 6px;
+  background:rgba(187,167,255,.12);
+  color:var(--lav);
+  font-size:9px;
+}
+
+/* MISTAKES */
+.mistake{
+  padding:15px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  margin-bottom:10px;
+  background:rgba(15,18,33,.45);
+}
+
+.mistake-title{
+  font-weight:700;
+  font-size:13px;
+}
+
+.mistake-meta{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin-top:8px;
+}
+
+/* FILTERS */
+.filters{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+.filter{
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--muted);
+  border-radius:99px;
+  padding:8px 12px;
+  font-size:11px;
+}
+
+.filter.active{
+  background:rgba(187,167,255,.12);
+  color:var(--lav);
+  border-color:rgba(187,167,255,.25);
+}
+
+/* MODAL */
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(5,7,16,.72);
+  backdrop-filter:blur(8px);
+  display:none;
+  place-items:center;
+  z-index:100;
+  padding:20px;
+}
+
+.modal-backdrop.show{display:grid}
+
+.modal{
+  width:min(650px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:#181C30;
+  border:1px solid var(--border2);
+  border-radius:24px;
+  padding:25px;
+  box-shadow:0 35px 100px rgba(0,0,0,.45);
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.modal-head h3{margin:0}
+
+.close{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  font-size:22px;
+}
+
+/* TOAST */
+.toast{
+  position:fixed;
+  right:25px;
+  bottom:25px;
+  padding:13px 17px;
+  border-radius:13px;
+  background:#242A45;
+  border:1px solid var(--border2);
+  color:var(--text);
+  box-shadow:var(--shadow);
+  transform:translateY(30px);
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  z-index:200;
+  font-size:12px;
+}
+
+.toast.show{
+  transform:translateY(0);
+  opacity:1;
+}
+
+/* MOBILE */
+.mobile-menu{display:none}
+
+@media(max-width:1050px){
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .two-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:800px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .sidebar{
+    transform:translateX(-100%);
+    transition:.25s;
+  }
+  .sidebar.open{transform:translateX(0);box-shadow:20px 0 60px rgba(0,0,0,.35)}
+  .main{grid-column:1;min-width:0}
+  .mobile-menu{display:block;flex:0 0 auto;padding:8px 10px}
+  .topbar{height:auto;min-height:72px;padding:12px 14px;gap:12px;align-items:center}
+  .topbar > div:first-child{display:flex;align-items:center;gap:10px;min-width:0}
+  .topbar > div:first-child > div{min-width:0}
+  .page-title{display:block;white-space:nowrap}
+  .page-sub{max-width:44vw;white-space:normal}
+  .top-actions{gap:6px;flex:0 0 auto}
+  .top-actions .btn{padding:9px 10px;font-size:12px}
+  .content{padding:16px;width:100%}
+  .three-grid{grid-template-columns:1fr}
+  .form-grid,.form-grid.three{grid-template-columns:1fr}
+  .hero{padding:25px}
+  .hero h2{font-size:28px}
+}
+
+@media(max-width:520px){
+  .stats-grid{grid-template-columns:1fr}
+  .topbar{align-items:flex-start}
+  .topbar > div:first-child{align-items:flex-start}
+  .page-sub{display:none}
+  .top-actions .btn{padding:8px 9px}
+  .hero{padding:20px}
+  .card{padding:17px}
+}
+
+/* CLOUD ACCOUNT */
+.cloud-card{
+  margin:0 0 22px;
+  padding:18px 20px;
+  border:1px solid rgba(142,223,245,.22);
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(142,223,245,.055),rgba(187,167,255,.06));
+}
+.cloud-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.cloud-title{font-family:"Manrope";font-weight:800;font-size:14px}
+.cloud-sub{font-size:11px;color:var(--muted);line-height:1.6;margin-top:5px}
+.cloud-status{font-size:10px;color:var(--ice);margin-top:7px;overflow-wrap:anywhere}
+.cloud-form{display:grid;grid-template-columns:minmax(150px,1fr) minmax(130px,1fr) auto auto;gap:9px;align-items:end;margin-top:15px}
+.cloud-form .field{margin:0}
+.cloud-form input{padding:10px 11px;font-size:12px}
+.cloud-form .btn{white-space:nowrap}
+.cloud-account{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:13px}
+.cloud-account-email{font-size:12px;color:var(--ice);overflow-wrap:anywhere}
+.cloud-hidden{display:none!important}
+@media(max-width:720px){.cloud-form{grid-template-columns:1fr 1fr}.cloud-form .btn{width:100%}}
+@media(max-width:440px){.cloud-form{grid-template-columns:1fr}}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brand-star">✦</div>
+    <div>
+      <h1>ASTRAEA</h1>
+      <small>A-Level Academic System</small>
+    </div>
+  </div>
+
+  <div class="nav-label">Workspace</div>
+  <nav class="nav">
+    <button class="active" data-view="dashboard"><span class="nav-icon">✦</span>Command Centre</button>
+    <button data-view="syllabus"><span class="nav-icon">◇</span>Syllabus</button>
+    <button data-view="exams"><span class="nav-icon">◷</span>Exams</button>
+    <button data-view="homework"><span class="nav-icon">□</span>Homework</button>
+    <button data-view="tasks"><span class="nav-icon">✓</span>Task Dashboard</button>
+    <button data-view="study"><span class="nav-icon">◌</span>Study Sessions</button>
+    <button data-view="papers"><span class="nav-icon">▤</span>Past Papers</button>
+    <button data-view="mistakes"><span class="nav-icon">△</span>Mistake Vault</button>
+    <button data-view="aether"><span class="nav-icon">✧</span>AETHER</button>
+    <button data-view="analytics"><span class="nav-icon">⌁</span>Analytics</button>
+  </nav>
+
+  <div class="nav-label">System</div>
+  <nav class="nav">
+    <button data-view="settings"><span class="nav-icon">⚙</span>Settings</button>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <p>Current trajectory</p>
+    <strong id="sidebarTarget">A* pathway</strong>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+<header class="topbar">
+  <div>
+    <button class="btn ghost mobile-menu" onclick="toggleSidebar()">☰</button>
+    <span class="page-title" id="pageTitle">Command Centre</span>
+    <div class="page-sub" id="pageSub">Your A-Level academic system</div>
+  </div>
+
+  <div class="top-actions">
+    <button class="btn" onclick="openModal('taskModal')">+ Mission</button>
+    <button class="btn primary" onclick="openModal('quickModal')">＋ Add</button>
+  </div>
+</header>
+
+<div class="content">
+
+<!-- DASHBOARD -->
+<section class="view active" id="dashboard">
+
+  <div class="hero">
+    <div class="eyebrow">✦ ASTRAEA · A-LEVEL JOURNEY</div>
+    <h2 id="greeting">Good evening, Hemisha.</h2>
+    <div class="hero-quote" id="dailyQuote"></div>
+    <div class="quote-author" id="quoteAuthor"></div>
+  </div>
+
+  <div class="grid stats-grid">
+    <div class="card">
+      <div class="stat-icon">◈</div>
+      <div class="stat-number" id="statMastery">0%</div>
+      <div class="stat-label">Overall syllabus mastery</div>
+    </div>
+
+    <div class="card">
+      <div class="stat-icon">✓</div>
+      <div class="stat-number" id="statTasks">0</div>
+      <div class="stat-label">Missions completed</div>
+    </div>
+
+    <div class="card">
+      <div class="stat-icon">◷</div>
+      <div class="stat-number" id="statExam">—</div>
+      <div class="stat-label">Days to next exam</div>
+    </div>
+
+    <div class="card">
+      <div class="stat-icon">△</div>
+      <div class="stat-number" id="statMistakes">0</div>
+      <div class="stat-label">Open mistakes</div>
+    </div>
+  </div>
+
+  <div class="grid two-grid">
+
+    <div class="card">
+      <div class="section-head">
+        <h3>Next Mission</h3>
+        <span class="badge lav">AETHER</span>
+      </div>
+      <div id="nextMission"></div>
+    </div>
+
+    <div class="card aether">
+      <div class="section-head">
+        <div class="aether-title">
+          <div class="aether-orb">✦</div>
+          <div>
+            <h3 style="margin:0">AETHER</h3>
+            <div style="font-size:10px;color:var(--muted)">Your academic intelligence layer</div>
+          </div>
+        </div>
+      </div>
+      <div id="aetherInsight"></div>
+    </div>
+
+  </div>
+
+  <div class="grid two-grid">
+
+    <div class="card">
+      <div class="section-head">
+        <h3>Subject Observatory</h3>
+        <button class="btn" onclick="showView('syllabus')">Open syllabus</button>
+      </div>
+      <div id="subjectDashboard"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <h3>Coming Up</h3>
+        <button class="btn" onclick="showView('exams')">View all</button>
+      </div>
+      <div id="comingUp"></div>
+    </div>
+
+  </div>
+
+  <div class="grid two-grid">
+
+    <div class="card">
+      <div class="section-head">
+        <h3>Homework Radar</h3>
+        <button class="btn" onclick="showView('homework')">Homework</button>
+      </div>
+      <div id="homeworkDashboard"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <h3>Retention Radar</h3>
+        <span class="badge warn">Review</span>
+      </div>
+      <div id="retentionDashboard"></div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- TASK DASHBOARD -->
+<section class="view" id="tasks">
+  <h2>Task Dashboard</h2>
+  <p class="subtitle">Every mission in one place. Keep track of priorities, deadlines and completed work.</p>
+  <div class="grid stats-grid">
+    <div class="card"><div class="stat-icon">◈</div><div class="stat-number" id="taskOpenCount">0</div><div class="stat-label">Open missions</div></div>
+    <div class="card"><div class="stat-icon">◷</div><div class="stat-number" id="taskDueCount">0</div><div class="stat-label">Due today or overdue</div></div>
+    <div class="card"><div class="stat-icon">✓</div><div class="stat-number" id="taskDoneCount">0</div><div class="stat-label">Completed missions</div></div>
+    <div class="card"><div class="stat-icon">⌁</div><div class="stat-number" id="taskMinutesCount">0m</div><div class="stat-label">Estimated open workload</div></div>
+  </div>
+  <div class="section-head" style="margin-top:22px;flex-wrap:wrap">
+    <div class="filters" id="taskFilters">
+      <button class="filter active" data-task-filter="all" onclick="setTaskFilter('all')">All</button>
+      <button class="filter" data-task-filter="open" onclick="setTaskFilter('open')">Open</button>
+      <button class="filter" data-task-filter="today" onclick="setTaskFilter('today')">Due today / overdue</button>
+      <button class="filter" data-task-filter="done" onclick="setTaskFilter('done')">Completed</button>
+    </div>
+    <button class="btn primary" onclick="openModal('taskModal')">＋ Add Mission</button>
+  </div>
+  <div class="card"><div id="taskDashboardList"></div></div>
+</section>
+
+<!-- SYLLABUS -->
+<section class="view" id="syllabus">
+  <h2>Syllabus Observatory</h2>
+  <p class="subtitle">Your complete A-Level curriculum, mastery and retention system.</p>
+
+  <div class="filters" id="subjectFilters"></div>
+
+  <div class="card" id="syllabusPanel"></div>
+</section>
+
+
+<!-- EXAMS -->
+<section class="view" id="exams">
+  <h2>Exam Observatory</h2>
+  <p class="subtitle">Every assessment has a place in ASTRAEA.</p>
+
+  <div class="section-head">
+    <div class="filters" id="examFilters"></div>
+    <button class="btn primary" onclick="openModal('examModal')">+ Add Exam</button>
+  </div>
+
+  <div class="grid two-grid">
+    <div class="card">
+      <h3>Upcoming Exams</h3>
+      <div id="examList"></div>
+    </div>
+
+    <div class="card">
+      <h3>Exam Calendar</h3>
+      <div id="calendar"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- HOMEWORK -->
+<section class="view" id="homework">
+  <h2>Homework Hub</h2>
+  <p class="subtitle">School and tuition work, organised without clutter.</p>
+
+  <div class="section-head">
+    <div class="filters" id="homeworkFilters"></div>
+    <button class="btn primary" onclick="openModal('homeworkModal')">+ Add Homework</button>
+  </div>
+
+  <div class="card">
+    <div id="homeworkList"></div>
+  </div>
+</section>
+
+
+<!-- STUDY -->
+<section class="view" id="study">
+  <h2>Study Sessions</h2>
+  <p class="subtitle">Track what you actually did — not just how long you sat at a desk.</p>
+
+  <div class="section-head">
+    <div></div>
+    <button class="btn primary" onclick="openModal('studyModal')">+ Log Session</button>
+  </div>
+
+  <div class="grid three-grid">
+    <div class="card">
+      <div class="stat-label">Total study time</div>
+      <div class="stat-number" id="totalStudy">0h</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Sessions</div>
+      <div class="stat-number" id="studyCount">0</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Average session</div>
+      <div class="stat-number" id="avgStudy">0m</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div id="studyList"></div>
+  </div>
+</section>
+
+
+<!-- PAPERS -->
+<section class="view" id="papers">
+  <h2>Past Paper Intelligence</h2>
+  <p class="subtitle">Turn every paper into evidence about your performance.</p>
+
+  <div class="section-head">
+    <div></div>
+    <button class="btn primary" onclick="openModal('paperModal')">+ Log Paper</button>
+  </div>
+
+  <div class="card">
+    <div id="paperList"></div>
+  </div>
+</section>
+
+
+<!-- MISTAKES -->
+<section class="view" id="mistakes">
+  <h2>Mistake Vault</h2>
+  <p class="subtitle">Your mistakes become data instead of disappearing after correction.</p>
+
+  <div class="section-head">
+    <div class="filters" id="mistakeFilters"></div>
+    <button class="btn primary" onclick="openModal('mistakeModal')">+ Log Mistake</button>
+  </div>
+
+  <div class="card">
+    <div id="mistakeList"></div>
+  </div>
+</section>
+
+
+<!-- AETHER -->
+<section class="view" id="aether">
+  <h2>AETHER ✦</h2>
+  <p class="subtitle">ASTRAEA's decision layer — connecting your syllabus, exams, mistakes and study history.</p>
+
+  <div class="grid two-grid">
+    <div class="card aether">
+      <div class="section-head">
+        <div class="aether-title">
+          <div class="aether-orb">✦</div>
+          <h3 style="margin:0">Next Best Move</h3>
+        </div>
+      </div>
+      <div id="aetherMain"></div>
+    </div>
+
+    <div class="card">
+      <h3>How AETHER sees your work</h3>
+
+      <div class="mission">
+        <div>
+          <h4>🧠 Knowledge Gap</h4>
+          <p>You don't yet have secure command of the concept.</p>
+        </div>
+      </div>
+
+      <div class="mission">
+        <div>
+          <h4>🎯 Application Gap</h4>
+          <p>You understand the theory but struggle to apply it.</p>
+        </div>
+      </div>
+
+      <div class="mission">
+        <div>
+          <h4>🧮 Execution Gap</h4>
+          <p>Your method or calculation needs refinement.</p>
+        </div>
+      </div>
+
+      <div class="mission">
+        <div>
+          <h4>📝 Exam Technique Gap</h4>
+          <p>You know the content but are losing marks in execution.</p>
+        </div>
+      </div>
+
+      <div class="mission">
+        <div>
+          <h4>⏳ Forgetting Risk</h4>
+          <p>A topic hasn't been revisited recently enough.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid three-grid" style="margin-top:18px">
+    <div class="card">
+      <div class="stat-label">Priority topics</div>
+      <div class="stat-number" id="aetherPriorityCount">0</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Retention risks</div>
+      <div class="stat-number" id="aetherRetentionCount">0</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Unresolved mistakes</div>
+      <div class="stat-number" id="aetherMistakeCount">0</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ANALYTICS -->
+<section class="view" id="analytics">
+  <h2>Academic Analytics</h2>
+  <p class="subtitle">Evidence of your progress across the A-Level journey.</p>
+
+  <div class="grid two-grid">
+    <div class="card">
+      <h3>Subject Mastery</h3>
+      <div id="analyticsMastery"></div>
+    </div>
+
+    <div class="card">
+      <h3>Past Paper Performance</h3>
+      <div id="analyticsPapers"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3>A-Level Roadmap</h3>
+    <div id="roadmap"></div>
+  </div>
+</section>
+
+
+<!-- SETTINGS -->
+<section class="view" id="settings">
+  <h2>Settings</h2>
+  <p class="subtitle">ASTRAEA belongs to you. Your data stays in this browser unless you export it.</p>
+
+  <div class="grid two-grid">
+
+    <div class="card">
+      <h3>Student Profile</h3>
+
+      <div class="field">
+        <label>Name</label>
+        <input id="settingName" placeholder="Your name">
+      </div>
+
+      <div class="field">
+        <label>Target</label>
+        <input id="settingTarget" placeholder="e.g. A*">
+      </div>
+
+      <div class="field">
+        <label>A-Level exam year</label>
+        <input id="settingYear" type="number" value="2028">
+      </div>
+
+      <button class="btn primary" onclick="saveSettings()">Save profile</button>
+    </div>
+
+    <div class="card">
+      <h3>Data</h3>
+      <p style="color:var(--muted);font-size:12px">
+        Export ASTRAEA as JSON for backup, or import a previous backup.
+      </p>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" onclick="exportData()">Export ASTRAEA</button>
+        <label class="btn" style="cursor:pointer">
+          Import ASTRAEA
+          <input type="file" accept=".json" hidden onchange="importData(event)">
+        </label>
+        <button class="btn" onclick="resetData()" style="color:var(--bad)">Reset everything</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:18px" id="cloudSettingsCard">
+    <h3>✦ ASTRAEA Cloud</h3>
+    <p style="color:var(--muted);font-size:12px">Sign in to sync your academic workspace across devices. Your cloud record is private to your account.</p>
+    <div class="cloud-status" id="cloudStatus" role="status" aria-live="polite">Cloud setup is not configured yet.</div>
+    <div id="cloudAuthForm" class="cloud-form">
+      <div class="field"><label for="cloudEmail">Email</label><input id="cloudEmail" type="email" autocomplete="email" placeholder="you@example.com"></div>
+      <div class="field"><label for="cloudPassword">Password</label><input id="cloudPassword" type="password" autocomplete="current-password" placeholder="At least 6 characters"></div>
+      <button class="btn primary" type="button" id="cloudSignInBtn" onclick="signInToAstraea()">Sign in</button>
+      <button class="btn" type="button" id="cloudSignUpBtn" onclick="signUpToAstraea()">Create account</button>
+    </div>
+    <div id="cloudSignedIn" class="cloud-account cloud-hidden">
+      <span class="cloud-account-email" id="cloudAccountEmail"></span>
+      <button class="btn" type="button" onclick="syncAstraeaNow()">Sync now</button>
+      <button class="btn ghost" type="button" onclick="signOutOfAstraea()">Sign out</button>
+    </div>
+  </div>
+</section>
+
+</div>
+</main>
+</div>
+
+
+<!-- MODALS -->
+
+<div class="modal-backdrop" id="taskModal">
+<div class="modal">
+  <div class="modal-head">
+    <h3>New Mission</h3>
+    <button class="close" onclick="closeModal('taskModal')">×</button>
+  </div>
+
+  <div class="form-grid">
+    <div class="field">
+      <label>Mission</label>
+      <input id="taskTitle" placeholder="e.g. Complete 20 integration questions">
+    </div>
+
+    <div class="field">
+      <label>Subject</label>
+      <select id="taskSubject"></select>
+    </div>
+  </div>
+
+  <div class="form-grid">
+    <div class="field">
+      <label>Due date</label>
+      <input id="taskDue" type="date">
+    </div>
+
+    <div class="field">
+      <label>Estimated minutes</label>
+      <input id="taskMinutes" type="number" value="45">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Type</label>
+    <select id="taskType">
+      <option>Learning</option>
+      <option>Active Recall</option>
+      <option>Exam Questions</option>
+      <option>Past Paper</option>
+      <option>Mistake Correction</option>
+      <option>Revision</option>
+      <option>Practical</option>
+    </select>
+  </div>
+
+  <div class="actions">
+    <button class="btn" onclick="closeModal('taskModal')">Cancel</button>
+    <button class="btn primary" onclick="createTask()">Create Mission</button>
+  </div>
+</div>
+</div>
+
+
+<div class="modal-backdrop" id="examModal">
+<div class="modal">
+  <div class="modal-head">
+    <h3>Add Exam</h3>
+    <button class="close" onclick="closeModal('examModal')">×</button>
+  </div>
+
+  <div class="form-grid">
+    <div class="field">
+      <label>Exam / Assessment</label>
+      <input id="examName" placeholder="e.g. Chemistry Mock">
+    </div>
+
+    <div class="field">
+      <label>Subject</label>
+      <select id="examSubject"></select>
+    </div>
+  </div>
+
+  <div class="form-grid three">
+    <div class="field">
+      <label>Date</label>
+      <input id="examDate" type="date">
+    </div>
+
+    <div class="field">
+      <label>Start time</label>
+      <input id="examTime" type="time">
+    </div>
+
+    <div class="field">
+      <label>Duration</label>
+      <input id="examDuration" placeholder="1h 30m">
+    </div>
+  </div>
+
+  <div class="form-grid">
+    <div class="field">
+      <label>Type</label>
+      <select id="examType">
+        <option>School Exam</option>
+        <option>Mock Exam</option>
+        <option>Tuition Test</option>
+        <option>Cambridge Exam</option>
+        <option>Practical</option>
+        <option>Class Test</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Component / Paper</label>
+      <input id="examPaper" placeholder="e.g. Paper 4">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Notes</label>
+    <textarea id="examNotes" placeholder="Anything important about this exam..."></textarea>
+  </div>
+
+  <div class="actions">
+    <button class="btn" onclick="closeModal('examModal')">Cancel</button>
+    <button class="btn primary" onclick="createExam()">Save Exam</button>
+  </div>
+</div>
+</div>
+
+
+<div class="modal-backdrop" id="homeworkModal">
+<div class="modal">
+  <div class="modal-head">
+    <h3>Add Homework</h3>
+    <button class="close" onclick="closeModal('homeworkModal')">×</button>
+  </div>
+
+  <div class="form-grid">
+    <div class="field">
+      <label>Assignment</label>
+      <input id="hwTitle" placeholder="e.g. Chemistry worksheet">
+    </div>
+
+    <div class="field">
+      <label>Subject</label>
+      <select id="hwSubject"></select>
+    </div>
+  </div>
+
+  <div class="form-grid three">
+    <div class="field">
+      <label>Source</label>
+      <select id="hwSource">
+        <option>School</option>
+        <option>Tuition</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Due date</label>
+      <input id="hwDue" type="date">
+    </div>
+
+    <div class="field">
+      <label>Estimated minutes</label>
+      <input id="hwMinutes" type="number" value="30">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Notes</label>
+    <textarea id="hwNotes"></textarea>
+  </div>
+
+  <div class="actions">
+    <button class="btn" onclick="closeModal('homeworkModal')">Cancel</button>
+    <button class="btn primary" onclick="createHomework()">Save Homework</button>
+  </div>
+</div>
+</div>
+
+
+<div class="modal-backdrop" id="studyModal">
+<div class="modal">
+  <div class="modal-head">
+    <h3>Log Study Session</h3>
+    <button class="close" onclick="closeModal('studyModal')">×</button>
+  </div>
+
+  <div class="form-grid">
+    <div class="field">
+      <label>Subject</label>
+      <select id="studySubject"></select>
+    </div>
+
+    <div class="field">
+      <label>Minutes</label>
+      <input id="studyMinutes" type="number" value="45">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Study mode</label>
+    <select id="studyMode">
+      <option>Learning</option>
+      <option>Active Recall</option>
+      <option>Exam Questions</option>
+      <option>Past Paper</option>
+      <option>Mistake Correction</option>
+      <option>Practical</option>
+      <option>Revision</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>What did you actually do?</label>
+    <textarea id="studyNotes" placeholder="e.g. Recalled all integration methods, then completed 12 questions..."></textarea>
+  </div>
+
+  <div class="actions">
+    <button class="btn" onclick="closeModal('studyModal')">Cancel</button>
+    <button class="btn primary" onclick="createStudy()">Log Session</button>
+  </div>
+</div>
+</div>
+
+
+<div class="modal-backdrop" id="paperModal">
+<div class="modal">
+  <div class="modal-head">
+    <h3>Log Past Paper</h3>
+    <button class="close" onclick="closeModal('paperModal')">×</button>
+  </div>
+
+  <div class="form-grid">
+    <div class="field">
+      <label>Subject</label>
+      <select id="paperSubject"></select>
+    </div>
+
+    <div class="field">
+      <label>Paper / Component</label>
+      <input id="paperComponent" placeholder="e.g. 9702/42">
+    </div>
+  </div>
+
+  <div class="form-grid three">
+    <div class="field">
+      <label>Year</label>
+      <input id="paperYear" type="number" value="2028">
+    </div>
+
+    <div class="field">
+      <label>Session</label>
+      <select id="paperSession">
+        <option>March</option>
+        <option>June</option>
+        <option>November</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Score</label>
+      <input id="paperScore" type="number">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Total marks</label>
+    <input id="paperTotal" type="number">
+  </div>
+
+  <div class="field">
+    <label>Reflection</label>
+    <textarea id="paperReflection" placeholder="What went wrong? What went well?"></textarea>
+  </div>
+
+  <div class="actions">
+    <button class="btn" onclick="closeModal('paperModal')">Cancel</button>
+    <button class="btn primary" onclick="createPaper()">Save Paper</button>
+  </div>
+</div>
+</div>
+
+
+<div class="modal-backdrop" id="mistakeModal">
+<div class="modal">
+  <div class="modal-head">
+    <h3>Log Mistake</h3>
+    <button class="close" onclick="closeModal('mistakeModal')">×</button>
+  </div>
+
+  <div class="form-grid">
+    <div class="field">
+      <label>Subject</label>
+      <select id="mistakeSubject"></select>
+    </div>
+
+    <div class="field">
+      <label>Category</label>
+      <select id="mistakeCategory">
+        <option>Knowledge Gap</option>
+        <option>Application Gap</option>
+        <option>Execution Error</option>
+        <option>Exam Technique</option>
+        <option>Misread Question</option>
+        <option>Careless Error</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Mistake</label>
+    <input id="mistakeTitle" placeholder="e.g. Used nCr when order mattered">
+  </div>
+
+  <div class="field">
+    <label>Correct understanding</label>
+    <textarea id="mistakeCorrection" placeholder="Write the rule / correction in your own words..."></textarea>
+  </div>
+
+  <div class="actions">
+    <button class="btn" onclick="closeModal('mistakeModal')">Cancel</button>
+    <button class="btn primary" onclick="createMistake()">Save Mistake</button>
+  </div>
+</div>
+</div>
+
+
+<div class="modal-backdrop" id="quickModal">
+<div class="modal">
+  <div class="modal-head">
+    <h3>Quick Add</h3>
+    <button class="close" onclick="closeModal('quickModal')">×</button>
+  </div>
+
+  <div class="grid">
+    <button class="btn" onclick="closeModal('quickModal');openModal('examModal')">◷ Add Exam</button>
+    <button class="btn" onclick="closeModal('quickModal');openModal('homeworkModal')">□ Add Homework</button>
+    <button class="btn" onclick="closeModal('quickModal');openModal('studyModal')">◌ Log Study Session</button>
+    <button class="btn" onclick="closeModal('quickModal');openModal('paperModal')">▤ Log Past Paper</button>
+    <button class="btn" onclick="closeModal('quickModal');openModal('mistakeModal')">△ Log Mistake</button>
+  </div>
+</div>
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ============================================================
+   ASTRAEA
+   Local academic operating system + optional Supabase cloud sync
+============================================================ */
+
+/*
+  SETUP: Replace these two placeholders with the Project URL and
+  publishable key from your own Supabase project settings.
+  Never use a service_role / secret key in this browser file.
+*/
+const SUPABASE_URL="https://dndfhcctjjcyxmwoyqhn.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_Vq1x8QXrPfIkVySyFcYVTA_x-cZL4x9";
+
+const KEY="ASTRAEA_ALEVEL_DATA_V1";
+
+const SUBJECTS=[
+  {
+    id:"physics",
+    name:"Physics",
+    code:"9702",
+    icon:"⚡",
+    topics:[
+      ["1","Physical quantities and units","SI units, prefixes, scalars and vectors, measurement"],
+      ["2","Kinematics","Motion, graphs, acceleration, projectiles"],
+      ["3","Dynamics","Forces, momentum, Newton's laws"],
+      ["4","Forces, density and pressure","Density, pressure, upthrust"],
+      ["5","Work, energy and power","Energy transfer, work, power, efficiency"],
+      ["6","Deformation of solids","Stress, strain, Young modulus, elastic behaviour"],
+      ["7","Waves","Wave properties, superposition, diffraction, interference"],
+      ["8","Superposition","Stationary waves, phase, coherence"],
+      ["9","Electric fields","Field strength, potential, energy"],
+      ["10","Current of electricity","Charge, current, resistance, circuits"],
+      ["11","D.C. circuits","Kirchhoff's laws, potential dividers, internal resistance"],
+      ["12","Particle physics","Particles, antiparticles, interactions"],
+      ["13","Quantum physics","Photons, photoelectric effect, wave-particle duality"],
+      ["14","Energy and temperature","Thermal energy, temperature, specific heat"],
+      ["15","Ideal gases","Molecular model, pressure, temperature"],
+      ["16","Oscillations","Simple harmonic motion, energy, damping"],
+      ["17","Gravitational fields","Field strength, potential, orbits"],
+      ["18","Astrophysics","Stars, luminosity, spectra, Hubble law"],
+      ["19","Nuclear physics","Radioactivity, decay, binding energy"],
+      ["20","Medical physics","Imaging, ultrasound, radiation"],
+      ["21","Electronics","Semiconductors, diodes, transistors, logic"],
+      ["22","Capacitance","Charging, discharging, energy"],
+      ["23","Magnetic fields","Force on currents and moving charges"],
+      ["24","Electromagnetic induction","Flux, Faraday's law, Lenz's law"],
+      ["25","Alternating currents","AC, transformers, rectification"],
+      ["26","Further mechanics","Circular motion, gravitational systems, momentum"],
+      ["27","Further waves","Interference, diffraction, polarisation"],
+      ["28","Further thermal physics","Entropy and thermodynamic ideas"]
+    ]
+  },
+
+  {
+    id:"chemistry",
+    name:"Chemistry",
+    code:"9701",
+    icon:"⚗",
+    topics:[
+      ["1","Atomic structure","Particles, isotopes, electron configuration"],
+      ["2","Atoms, molecules and stoichiometry","Moles, formulae, equations, calculations"],
+      ["3","Enthalpy changes","Energetics, Hess's law, bond energies"],
+      ["4","Electrochemistry","Electrolysis, electrode potentials, cells"],
+      ["5","Equilibria","Dynamic equilibrium, Kc, Le Chatelier"],
+      ["6","Reaction kinetics","Rate, collision theory, rate equations"],
+      ["7","Periodicity","Periodic trends and properties"],
+      ["8","Group 2","Reactions and compounds of alkaline earth metals"],
+      ["9","Group 17","Halogens and their compounds"],
+      ["10","Nitrogen and sulphur","Chemistry of nitrogen and sulphur"],
+      ["11","An introduction to organic chemistry","Functional groups, nomenclature, isomerism"],
+      ["12","Hydrocarbons","Alkanes, alkenes, aromatic chemistry"],
+      ["13","Halogen derivatives","Halogenoalkanes and related reactions"],
+      ["14","Hydroxy compounds","Alcohols, phenols"],
+      ["15","Carbonyl compounds","Aldehydes and ketones"],
+      ["16","Carboxylic acids and derivatives","Acids, esters, acyl compounds"],
+      ["17","Nitrogen compounds","Amines, amides, nitriles"],
+      ["18","Polymerisation","Addition and condensation polymers"],
+      ["19","Analytical techniques","Mass spectra, IR, NMR, chromatography"],
+      ["20","Further organic chemistry","Extended organic synthesis"],
+      ["21","Further inorganic chemistry","Transition elements and advanced inorganic chemistry"],
+      ["22","Chemistry of life","Biochemical molecules and reactions"],
+      ["23","Practical chemistry","Planning, analysis, evaluation and practical skills"]
+    ]
+  },
+
+  {
+    id:"math",
+    name:"Mathematics",
+    code:"9709",
+    icon:"∑",
+    topics:[
+      ["1.1","Quadratics","Roots, discriminant, inequalities"],
+      ["1.2","Functions","Notation, domain, range, inverse and composite functions"],
+      ["1.3","Coordinate geometry","Lines, circles and coordinate methods"],
+      ["1.4","Circular measure","Radians, arc length, sector area"],
+      ["1.5","Trigonometry","Identities, equations, graphs"],
+      ["1.6","Series","Sequences, binomial expansion, arithmetic and geometric series"],
+      ["1.7","Differentiation","Derivatives, applications, tangents and normals"],
+      ["1.8","Integration","Indefinite and definite integration, area"],
+      ["2.1","Algebra","Algebraic manipulation and inequalities"],
+      ["2.2","Logarithmic and exponential functions","Laws, graphs and equations"],
+      ["2.3","Trigonometry","Advanced identities and equations"],
+      ["2.4","Differentiation","Further differentiation and applications"],
+      ["2.5","Integration","Further integration and applications"],
+      ["2.6","Numerical solution of equations","Iteration and numerical methods"],
+      ["3.1","Advanced algebra","Further algebraic techniques"],
+      ["3.2","Advanced logarithmic and exponential functions","Further applications"],
+      ["3.3","Advanced trigonometry","Further identities and equations"],
+      ["3.4","Advanced differentiation","Further derivatives"],
+      ["3.5","Advanced integration","Further techniques"],
+      ["3.6","Numerical methods","Further numerical solutions"],
+      ["3.7","Vectors","Vector geometry and applications"],
+      ["3.8","Differential equations","First-order differential equations"],
+      ["3.9","Complex numbers","Argand diagrams and complex algebra"],
+      ["4.1","Forces and equilibrium","Resultants and equilibrium"],
+      ["4.2","Kinematics","Motion in a straight line"],
+      ["4.3","Momentum","Collisions and conservation"],
+      ["4.4","Newton's laws","Dynamics"],
+      ["4.5","Energy, work and power","Mechanical energy"],
+      ["5.1","Representation of data","Data, diagrams and measures"],
+      ["5.2","Permutations and combinations","Counting methods"],
+      ["5.3","Probability","Probability laws"],
+      ["5.4","Discrete random variables","Expectation and variance"],
+      ["5.5","Normal distribution","Standardisation and probabilities"],
+      ["6.1","Poisson distribution","Poisson model"],
+      ["6.2","Linear combinations of random variables","Means and variances"],
+      ["6.3","Continuous random variables","Probability density"],
+      ["6.4","Sampling and estimation","Samples, estimates and confidence"],
+      ["6.5","Hypothesis tests","Statistical testing"]
+    ]
+  },
+
+  {
+    id:"french",
+    name:"French",
+    code:"8028",
+    icon:"🇫🇷",
+    topics:[
+      ["1","Identity and relationships","Personal identity, family, relationships and lifestyle"],
+      ["2","Home and local area","Home, neighbourhood, community and services"],
+      ["3","Education and future plans","School, learning, work and aspirations"],
+      ["4","Food, health and fitness","Diet, wellbeing, sport and healthy living"],
+      ["5","Leisure, culture and entertainment","Free time, media, arts, culture"],
+      ["6","Travel and the wider world","Travel, environment, society and global issues"],
+      ["7","Grammar","Tenses, pronouns, agreements, structures"],
+      ["8","Vocabulary development","High-frequency and thematic vocabulary"],
+      ["9","Listening","Comprehension and inference"],
+      ["10","Reading","Comprehension, analysis and interpretation"],
+      ["11","Writing","Accuracy, communication and extended responses"],
+      ["12","Speaking","Interaction, presentation and discussion"]
+    ]
+  },
+
+  {
+    id:"gp",
+    name:"English General Paper",
+    code:"8021",
+    icon:"✎",
+    topics:[
+      ["1","Economic, historical, moral, political and social","Society, government, history, economics and ethics"],
+      ["2","Science and technology","Scientific developments and technological change"],
+      ["3","Environment","Climate, resources, sustainability and human impact"],
+      ["4","Culture","Arts, literature, music, heritage and identity"],
+      ["5","Media","News, advertising, digital media and communication"],
+      ["6","Education","Schools, universities, access and educational policy"],
+      ["7","Health","Healthcare, public health, lifestyle and medicine"],
+      ["8","International relations","Globalisation, conflict, cooperation and organisations"],
+      ["9","Law and crime","Justice, law, rights and social order"],
+      ["10","Sport","Sport, society, economics and culture"],
+      ["11","Comprehension","Understanding, analysis and inference"],
+      ["12","Argument","Reasoning, evidence, counterargument and evaluation"],
+      ["13","Essay writing","Structure, relevance, examples and style"],
+      ["14","Persuasive writing","Audience, purpose, tone and persuasion"],
+      ["15","Research and topical awareness","Independent research and contemporary knowledge"]
+    ]
+  }
+];
+
+/* ---------- STATE ---------- */
+
+function uid(){
+  return (crypto.randomUUID && crypto.randomUUID()) ||
+    Date.now().toString(36)+Math.random().toString(36).slice(2);
+}
+
+function freshData(){
+  const mastery={};
+  SUBJECTS.forEach(s=>{
+    mastery[s.id]={};
+    s.topics.forEach(t=>mastery[s.id][t[0]]=0);
+  });
+
+  return {
+    profile:{
+      name:"Hemisha",
+      target:"A*",
+      year:2028
+    },
+    mastery,
+    tasks:[],
+    exams:[],
+    homework:[],
+    studies:[],
+    papers:[],
+    mistakes:[],
+    settings:{}
+  };
+}
+
+let data=load();
+
+function load(){
+  try{
+    const raw=localStorage.getItem(KEY);
+    if(!raw)return freshData();
+
+    const parsed=JSON.parse(raw);
+    const base=freshData();
+
+    return {
+      ...base,
+      ...parsed,
+      profile:{...base.profile,...parsed.profile},
+      mastery:{...base.mastery,...parsed.mastery}
+    };
+  }catch(e){
+    return freshData();
+  }
+}
+
+function save(){
+  localStorage.setItem(KEY,JSON.stringify(data));
+  if(cloudReady && currentCloudUser && supabaseClient){
+    clearTimeout(cloudSaveTimer);
+    cloudSaveTimer=setTimeout(()=>persistAstraeaToCloud(false),800);
+    setCloudStatus("Changes saved on this device · syncing to cloud…");
+  }
+}
+
+/* ---------- SUPABASE ACCOUNT + SYNC ---------- */
+let supabaseClient=null;
+let currentCloudUser=null;
+let cloudReady=false;
+let cloudSaveTimer=null;
+let handlingCloudAuth=false;
+
+function cloudConfigured(){
+  return SUPABASE_URL.startsWith("https://") &&
+    SUPABASE_PUBLISHABLE_KEY &&
+    !SUPABASE_PUBLISHABLE_KEY.includes("PASTE_YOUR_") &&
+    !SUPABASE_URL.includes("PASTE_YOUR_");
+}
+
+function setCloudStatus(message, isError=false){
+  const el=document.getElementById("cloudStatus");
+  if(!el)return;
+  el.textContent=message;
+  el.style.color=isError ? "var(--bad)" : "var(--ice)";
+}
+
+function updateCloudAccountUI(){
+  const form=document.getElementById("cloudAuthForm");
+  const signed=document.getElementById("cloudSignedIn");
+  const email=document.getElementById("cloudAccountEmail");
+  if(!form || !signed)return;
+  const loggedIn=!!currentCloudUser;
+  form.classList.toggle("cloud-hidden",loggedIn);
+  signed.classList.toggle("cloud-hidden",!loggedIn);
+  if(email)email.textContent=loggedIn ? `Signed in as ${currentCloudUser.email || "your account"}` : "";
+}
+
+async function persistAstraeaToCloud(showToast=true){
+  if(!supabaseClient || !currentCloudUser || !cloudReady)return;
+  try{
+    const {error}=await supabaseClient
+      .from("astraea_user_data")
+      .upsert({user_id:currentCloudUser.id,data:data,updated_at:new Date().toISOString()},{onConflict:"user_id"});
+    if(error)throw error;
+    localStorage.setItem(KEY,JSON.stringify(data));
+    setCloudStatus("Cloud synced successfully ✦");
+    if(showToast)toast("ASTRAEA synced to cloud ✦");
+  }catch(error){
+    console.error("ASTRAEA cloud save failed:",error);
+    setCloudStatus("Cloud sync failed. Your local data is still saved. " + (error.message || ""),true);
+    if(showToast)toast("Cloud sync failed; local backup remains.");
+  }
+}
+
+async function syncAstraeaNow(){
+  if(!currentCloudUser){setCloudStatus("Sign in before syncing.",true);return;}
+  clearTimeout(cloudSaveTimer);
+  await persistAstraeaToCloud(true);
+}
+
+async function handleAstraeaSession(session){
+  const user=session?.user || null;
+  if(!user){
+    currentCloudUser=null;
+    cloudReady=false;
+    updateCloudAccountUI();
+    if(cloudConfigured())setCloudStatus("Not signed in. Your existing local data remains on this device.");
+    return;
+  }
+  if(handlingCloudAuth)return;
+  if(currentCloudUser?.id===user.id && cloudReady){updateCloudAccountUI();return;}
+  handlingCloudAuth=true;
+  currentCloudUser=user;
+  cloudReady=false;
+  updateCloudAccountUI();
+  setCloudStatus("Loading your private ASTRAEA workspace…");
+  try{
+    const {data:row,error}=await supabaseClient
+      .from("astraea_user_data")
+      .select("data")
+      .eq("user_id",user.id)
+      .maybeSingle();
+    if(error)throw error;
+
+    if(row && row.data && typeof row.data==="object"){
+      const incoming=row.data;
+      const base=freshData();
+      data={...base,...incoming,
+        profile:{...base.profile,...(incoming.profile||{})},
+        mastery:{...base.mastery,...(incoming.mastery||{})}
+      };
+      localStorage.setItem(KEY,JSON.stringify(data));
+      renderAll();
+      setCloudStatus("Your cloud workspace is loaded and ready ✦");
+    }else{
+      // First login: preserve and migrate the data already in this browser.
+      localStorage.setItem(KEY,JSON.stringify(data));
+      const {error:insertError}=await supabaseClient
+        .from("astraea_user_data")
+        .upsert({user_id:user.id,data:data,updated_at:new Date().toISOString()},{onConflict:"user_id"});
+      if(insertError)throw insertError;
+      setCloudStatus("First sync complete — your existing ASTRAEA data has been copied to the cloud ✦");
+    }
+    cloudReady=true;
+    updateCloudAccountUI();
+  }catch(error){
+    console.error("ASTRAEA cloud load failed:",error);
+    cloudReady=false;
+    setCloudStatus("Could not load cloud data. Check your Supabase setup and connection: " + (error.message || "Unknown error"),true);
+  }finally{
+    handlingCloudAuth=false;
+  }
+}
+
+async function signInToAstraea(){
+  if(!supabaseClient){setCloudStatus("Add your Supabase Project URL and publishable key in the configuration section of this HTML file first.",true);return;}
+  const email=document.getElementById("cloudEmail").value.trim();
+  const password=document.getElementById("cloudPassword").value;
+  if(!email || !password){setCloudStatus("Enter your email and password to sign in.",true);return;}
+  setCloudStatus("Signing in…");
+  const {data:result,error}=await supabaseClient.auth.signInWithPassword({email,password});
+  if(error){setCloudStatus(error.message,true);return;}
+  await handleAstraeaSession(result.session);
+}
+
+async function signUpToAstraea(){
+  if(!supabaseClient){setCloudStatus("Add your Supabase Project URL and publishable key in the configuration section of this HTML file first.",true);return;}
+  const email=document.getElementById("cloudEmail").value.trim();
+  const password=document.getElementById("cloudPassword").value;
+  if(!email || !password){setCloudStatus("Enter an email and password to create an account.",true);return;}
+  if(password.length<6){setCloudStatus("Use a password with at least 6 characters.",true);return;}
+  setCloudStatus("Creating your account…");
+  const {data:result,error}=await supabaseClient.auth.signUp({email,password});
+  if(error){setCloudStatus(error.message,true);return;}
+  if(result.session){
+    await handleAstraeaSession(result.session);
+  }else{
+    setCloudStatus("Account created. Check your email for the confirmation link, then return here and sign in.");
+  }
+}
+
+async function signOutOfAstraea(){
+  if(!supabaseClient)return;
+  clearTimeout(cloudSaveTimer);
+  // Best effort: finish pending local changes before signing out.
+  if(cloudReady && currentCloudUser)await persistAstraeaToCloud(false);
+  const {error}=await supabaseClient.auth.signOut();
+  if(error){setCloudStatus(error.message,true);return;}
+  currentCloudUser=null;
+  cloudReady=false;
+  data=freshData();
+  localStorage.removeItem(KEY);
+  renderAll();
+  updateCloudAccountUI();
+  setCloudStatus("Signed out. Your cloud data remains saved in your account.");
+}
+
+async function initialiseAstraeaCloud(){
+  if(!cloudConfigured()){
+    setCloudStatus("Setup needed: add your Supabase Project URL and publishable key in the configuration section of this HTML file.");
+    updateCloudAccountUI();
+    return;
+  }
+  if(!window.supabase || !window.supabase.createClient){
+    setCloudStatus("Supabase library did not load. Check your internet connection and reload ASTRAEA.",true);
+    return;
+  }
+  supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+  const {data:sessionData,error}=await supabaseClient.auth.getSession();
+  if(error){setCloudStatus(error.message,true);return;}
+  if(sessionData.session)await handleAstraeaSession(sessionData.session);
+  else setCloudStatus("Connected to Supabase. Sign in or create an account to enable cloud sync.");
+  supabaseClient.auth.onAuthStateChange((_event,session)=>{
+    // Defer to avoid doing Supabase calls inside the auth callback lock.
+    setTimeout(()=>handleAstraeaSession(session),0);
+  });
+}
+
+function esc(value){
+  return String(value??"")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function subject(id){
+  return SUBJECTS.find(s=>s.id===id);
+}
+
+function subjectName(id){
+  return subject(id)?.name || "Unknown";
+}
+
+function todayISO(){
+  const d=new Date();
+  return d.toISOString().slice(0,10);
+}
+
+function daysBetween(date){
+  const a=new Date();
+  a.setHours(0,0,0,0);
+  const b=new Date(date+"T00:00:00");
+  return Math.ceil((b-a)/86400000);
+}
+
+function formatDate(date){
+  if(!date)return "—";
+  return new Date(date+"T00:00:00").toLocaleDateString(undefined,{
+    day:"numeric",month:"short",year:"numeric"
+  });
+}
+
+function avg(arr){
+  return arr.length?Math.round(arr.reduce((a,b)=>a+b,0)/arr.length):0;
+}
+
+
+/* ---------- QUOTES ---------- */
+
+const QUOTES=[
+  ["Small progress is still progress. Keep moving.","ASTRAEA"],
+  ["You do not need to master everything today. You only need to master today's next thing.","ASTRAEA"],
+  ["Discipline becomes easier when the destination is clear.","ASTRAEA"],
+  ["A difficult topic is not a verdict. It is a map.","ASTRAEA"],
+  ["Consistency is quieter than motivation, but it lasts longer.","ASTRAEA"],
+  ["Study for the person you are becoming.","ASTRAEA"],
+  ["One mastered concept can change an entire paper.","ASTRAEA"],
+  ["Your future is built quietly, one mastered concept at a time.","ASTRAEA"],
+  ["Do the next useful thing.","ASTRAEA"],
+  ["Confidence follows evidence. Build the evidence.","ASTRAEA"],
+  ["You are allowed to learn slowly. You are not required to stay stuck.","ASTRAEA"],
+  ["The goal is not more hours. The goal is better learning.","ASTRAEA"],
+  ["Every corrected mistake is one less surprise in the exam.","ASTRAEA"],
+  ["Let your preparation become stronger than your anxiety.","ASTRAEA"],
+  ["You don't need a perfect day. You need a meaningful one.","ASTRAEA"]
+];
+
+function dailyQuote(){
+  const start=new Date(2026,0,1);
+  const now=new Date();
+  const day=Math.floor((now-start)/86400000);
+  return QUOTES[Math.abs(day)%QUOTES.length];
+}
+
+
+/* ---------- NAVIGATION ---------- */
+
+const titles={
+  dashboard:["Command Centre","Your A-Level academic system"],
+  syllabus:["Syllabus Observatory","Your complete A-Level curriculum"],
+  exams:["Exam Observatory","Every assessment, scheduled"],
+  homework:["Homework Hub","School + tuition"],
+  tasks:["Task Dashboard","Your missions, deadlines and progress"],
+  study:["Study Sessions","Evidence of what you actually did"],
+  papers:["Past Paper Intelligence","Turn papers into data"],
+  mistakes:["Mistake Vault","Your errors become evidence"],
+  aether:["AETHER","Your academic intelligence layer"],
+  analytics:["Academic Analytics","Your long-term trajectory"],
+  settings:["Settings","Your ASTRAEA system"]
+};
+
+function showView(id){
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+
+  document.querySelectorAll(".nav button").forEach(b=>{
+    b.classList.toggle("active",b.dataset.view===id);
+  });
+
+  document.getElementById("pageTitle").textContent=titles[id][0];
+  document.getElementById("pageSub").textContent=titles[id][1];
+
+  if(window.innerWidth<800)document.getElementById("sidebar").classList.remove("open");
+
+  renderAll();
+}
+
+document.querySelectorAll(".nav button").forEach(btn=>{
+  btn.addEventListener("click",()=>showView(btn.dataset.view));
+});
+
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("open");
+}
+
+
+/* ---------- MODALS ---------- */
+
+function openModal(id){
+  document.getElementById(id).classList.add("show");
+}
+
+function closeModal(id){
+  document.getElementById(id).classList.remove("show");
+}
+
+document.querySelectorAll(".modal-backdrop").forEach(m=>{
+  m.addEventListener("click",e=>{
+    if(e.target===m)m.classList.remove("show");
+  });
+});
+
+
+/* ---------- SELECTS ---------- */
+
+function populateSelects(){
+  const ids=[
+    "taskSubject","examSubject","hwSubject",
+    "studySubject","paperSubject","mistakeSubject"
+  ];
+
+  ids.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+
+    el.innerHTML=SUBJECTS.map(s=>
+      `<option value="${s.id}">${s.name} (${s.code})</option>`
+    ).join("");
+  });
+}
+
+
+/* ---------- DASHBOARD ---------- */
+
+function calculateOverallMastery(){
+  let values=[];
+  SUBJECTS.forEach(s=>{
+    s.topics.forEach(t=>{
+      values.push(Number(data.mastery[s.id]?.[t[0]]||0));
+    });
+  });
+  return avg(values);
+}
+
+function renderDashboard(){
+
+  const [quote,author]=dailyQuote();
+
+  document.getElementById("dailyQuote").textContent=`“${quote}”`;
+  document.getElementById("quoteAuthor").textContent=`— ${author}`;
+
+  const hour=new Date().getHours();
+  let greeting="Good evening";
+  if(hour<12)greeting="Good morning";
+  else if(hour<18)greeting="Good afternoon";
+
+  document.getElementById("greeting").textContent=
+    `${greeting}, ${data.profile.name || "Scholar"}.`;
+
+  const mastery=calculateOverallMastery();
+  document.getElementById("statMastery").textContent=mastery+"%";
+
+  document.getElementById("statTasks").textContent=
+    data.tasks.filter(t=>t.done).length;
+
+  const upcoming=data.exams
+    .filter(e=>daysBetween(e.date)>=0)
+    .sort((a,b)=>a.date.localeCompare(b.date))[0];
+
+  document.getElementById("statExam").textContent=
+    upcoming ? Math.max(0,daysBetween(upcoming.date)) : "—";
+
+  document.getElementById("statMistakes").textContent=
+    data.mistakes.filter(m=>!m.fixed).length;
+
+  renderNextMission();
+  renderAetherInsight();
+  renderSubjectDashboard();
+  renderComingUp();
+  renderHomeworkDashboard();
+  renderRetentionDashboard();
+}
+
+
+/* ---------- AETHER ENGINE ---------- */
+
+function topicMastery(sid,tid){
+  return Number(data.mastery[sid]?.[tid]||0);
+}
+
+function retentionRisk(sid,tid){
+  const history=data.studies
+    .filter(x=>x.subject===sid && x.topic===tid)
+    .sort((a,b)=>b.date.localeCompare(a.date));
+
+  if(!history.length){
+    return {score:100,label:"Never reviewed"};
+  }
+
+  const days=Math.max(0,daysBetween(history[0].date)*-1);
+  const mastery=topicMastery(sid,tid);
+
+  let score=days*4 + (100-mastery)*.45;
+  score=Math.min(100,Math.round(score));
+
+  let label="Stable";
+  if(score>=75)label="High";
+  else if(score>=45)label="Watch";
+
+  return {score,label};
+}
+
+function allTopicScores(){
+
+  const exams=data.exams.filter(e=>daysBetween(e.date)>=0);
+
+  const nearest=exams.sort((a,b)=>a.date.localeCompare(b.date))[0];
+  const examDays=nearest?Math.max(0,daysBetween(nearest.date)):90;
+
+  const scores=[];
+
+  SUBJECTS.forEach(s=>{
+    s.topics.forEach(t=>{
+      const m=topicMastery(s.id,t[0]);
+      const mistakes=data.mistakes.filter(x=>
+        x.subject===s.id &&
+        !x.fixed &&
+        x.topic===t[0]
+      ).length;
+
+      const risk=retentionRisk(s.id,t[0]).score;
+
+      const examPressure=nearest && nearest.subject===s.id
+        ? Math.max(0,50-examDays*2)
+        : 0;
+
+      const priority=
+        (100-m)*.48+
+        risk*.22+
+        mistakes*8+
+        examPressure;
+
+      scores.push({
+        subject:s,
+        topic:t,
+        mastery:m,
+        risk,
+        mistakes,
+        priority
+      });
+    });
+  });
+
+  return scores.sort((a,b)=>b.priority-a.priority);
+}
+
+function getNextMission(){
+  return allTopicScores()[0];
+}
+
+function renderNextMission(){
+
+  const el=document.getElementById("nextMission");
+  const item=getNextMission();
+
+  if(!item){
+    el.innerHTML="<p style='color:var(--muted)'>No mission data yet.</p>";
+    return;
+  }
+
+  const m=item.mastery;
+  const reason=
+    m<40 ? "Knowledge is not yet secure."
+    :m<65 ? "This topic needs consolidation."
+    :item.risk>70 ? "Retention risk is rising."
+    :item.mistakes ? `${item.mistakes} unresolved mistake(s) are linked to this topic.`
+    :"Keep building exam evidence.";
+
+  el.innerHTML=`
+    <div class="mission" style="border:0">
+      <div>
+        <h4>${esc(item.subject.name)} — ${esc(item.topic[1])}</h4>
+        <p>${esc(reason)}</p>
+
+        <div class="progress-row" style="width:min(400px,100%);margin-top:14px">
+          <div class="progress-meta">
+            <span>Mastery</span>
+            <span>${m}%</span>
+          </div>
+          <div class="progress">
+            <div style="width:${m}%"></div>
+          </div>
+        </div>
+      </div>
+
+      <span class="badge ${m<50?"bad":"warn"}">
+        ${m<50?"PRIORITY":"DEVELOPING"}
+      </span>
+    </div>
+
+    <div style="margin-top:8px;color:var(--muted);font-size:11px;line-height:1.7">
+      <b style="color:var(--text)">Suggested sequence:</b>
+      Active recall → exam questions → correct → log mistakes → revisit.
+    </div>
+  `;
+}
+
+function renderAetherInsight(){
+
+  const el=document.getElementById("aetherInsight");
+  const item=getNextMission();
+
+  if(!item){
+    el.innerHTML="<p style='color:var(--muted)'>Add syllabus mastery, exams and mistakes for AETHER to start analysing your academic situation.</p>";
+    return;
+  }
+
+  const exam=data.exams
+    .filter(e=>e.subject===item.subject.id && daysBetween(e.date)>=0)
+    .sort((a,b)=>a.date.localeCompare(b.date))[0];
+
+  let insight;
+
+  if(item.mastery<40){
+    insight=`${item.subject.name} → ${item.topic[1]} is currently one of your biggest knowledge priorities. Build the concept before chasing difficult questions.`;
+  }else if(item.mistakes>0){
+    insight=`You have unresolved mistakes connected to ${item.topic[1]}. Correction is more valuable right now than simply doing more new questions.`;
+  }else if(item.risk>70){
+    insight=`${item.topic[1]} has a high retention risk. A short active-recall session could protect the knowledge you've already built.`;
+  }else if(exam){
+    insight=`Your ${item.subject.name} assessment is approaching. Shift this topic toward exam-style application and timed practice.`;
+  }else{
+    insight=`Your next academic move is ${item.topic[1]}. Keep the cycle: learn → recall → apply → correct → retain.`;
+  }
+
+  el.innerHTML=`
+    <p style="font-size:13px;line-height:1.8">${esc(insight)}</p>
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+      <span class="badge info">NEXT: ${esc(item.subject.name)}</span>
+      <span class="badge lav">${esc(item.topic[1])}</span>
+    </div>
+  `;
+}
+
+
+/* ---------- SUBJECT DASHBOARD ---------- */
+
+function renderSubjectDashboard(){
+
+  const el=document.getElementById("subjectDashboard");
+
+  el.innerHTML=SUBJECTS.map(s=>{
+    const vals=s.topics.map(t=>topicMastery(s.id,t[0]));
+    const m=avg(vals);
+
+    return `
+      <div class="progress-row">
+        <div class="progress-meta">
+          <span>${s.icon} ${esc(s.name)}</span>
+          <span>${m}%</span>
+        </div>
+        <div class="progress">
+          <div style="width:${m}%"></div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+
+/* ---------- UPCOMING ---------- */
+
+function renderComingUp(){
+
+  const el=document.getElementById("comingUp");
+
+  const exams=data.exams
+    .filter(e=>daysBetween(e.date)>=0)
+    .sort((a,b)=>a.date.localeCompare(b.date))
+    .slice(0,4);
+
+  if(!exams.length){
+    el.innerHTML=`
+      <p style="color:var(--muted);font-size:12px">
+        No exams scheduled yet.
+      </p>`;
+    return;
+  }
+
+  el.innerHTML=exams.map(e=>{
+    const d=daysBetween(e.date);
+
+    return `
+      <div class="mission">
+        <div>
+          <h4>${esc(e.name)}</h4>
+          <p>${esc(subjectName(e.subject))} · ${formatDate(e.date)}</p>
+        </div>
+        <span class="badge ${d<=7?"bad":d<=21?"warn":"info"}">
+          ${d===0?"TODAY":d+"d"}
+        </span>
+      </div>
+    `;
+  }).join("");
+}
+
+
+/* ---------- HOMEWORK DASHBOARD ---------- */
+
+function renderHomeworkDashboard(){
+
+  const el=document.getElementById("homeworkDashboard");
+
+  const items=data.homework
+    .filter(x=>!x.done)
+    .sort((a,b)=>a.due.localeCompare(b.due))
+    .slice(0,4);
+
+  if(!items.length){
+    el.innerHTML="<p style='color:var(--muted);font-size:12px'>Nothing waiting. ✦</p>";
+    return;
+  }
+
+  el.innerHTML=items.map(x=>{
+    const d=daysBetween(x.due);
+
+    return `
+      <div class="mission">
+        <div>
+          <h4>${esc(x.title)}</h4>
+          <p>${esc(subjectName(x.subject))} · ${esc(x.source)} · ${formatDate(x.due)}</p>
+        </div>
+        <span class="badge ${d<0?"bad":d<=2?"warn":"info"}">
+          ${d<0?"OVERDUE":d===0?"TODAY":d+"d"}
+        </span>
+      </div>
+    `;
+  }).join("");
+}
+
+
+/* ---------- RETENTION ---------- */
+
+function renderRetentionDashboard(){
+
+  const el=document.getElementById("retentionDashboard");
+
+  const risks=allTopicScores()
+    .filter(x=>x.risk>=60)
+    .slice(0,4);
+
+  if(!risks.length){
+    el.innerHTML="<p style='color:var(--muted);font-size:12px'>No major retention risks detected.</p>";
+    return;
+  }
+
+  el.innerHTML=risks.map(x=>`
+    <div class="mission">
+      <div>
+        <h4>${esc(x.subject.name)} — ${esc(x.topic[1])}</h4>
+        <p>${x.mastery}% mastery · retention risk ${x.risk}%</p>
+      </div>
+      <span class="badge warn">REVIEW</span>
+    </div>
+  `).join("");
+}
+
+
+/* ---------- SYLLABUS ---------- */
+
+let selectedSubject="physics";
+
+function renderSubjectFilters(){
+
+  const el=document.getElementById("subjectFilters");
+
+  el.innerHTML=SUBJECTS.map(s=>`
+    <button
+      class="filter ${selectedSubject===s.id?"active":""}"
+      onclick="selectedSubject='${s.id}';renderSyllabus()">
+      ${s.icon} ${s.name}
+    </button>
+  `).join("");
+}
+
+function renderSyllabus(){
+
+  renderSubjectFilters();
+
+  const s=subject(selectedSubject);
+  if(!s)return;
+
+  const mastery=avg(s.topics.map(t=>topicMastery(s.id,t[0])));
+
+  document.getElementById("syllabusPanel").innerHTML=`
+    <div class="section-head">
+      <div>
+        <div class="subject-code">${s.code}</div>
+        <h3 style="margin:5px 0">${s.icon} ${esc(s.name)}</h3>
+      </div>
+
+      <div style="text-align:right">
+        <div class="mastery-big">${mastery}%</div>
+        <div class="stat-label">subject mastery</div>
+      </div>
+    </div>
+
+    <div class="progress" style="margin-bottom:22px">
+      <div style="width:${mastery}%"></div>
+    </div>
+
+    ${s.topics.map((t,i)=>{
+
+      const m=topicMastery(s.id,t[0]);
+
+      return `
+        <div class="topic">
+          <div class="topic-top">
+            <div>
+              <div class="topic-name">${esc(t[0])} · ${esc(t[1])}</div>
+              <div class="topic-sub">${esc(t[2])}</div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:10px">
+              <span class="badge ${m>=80?"good":m>=60?"warn":"bad"}">${m}%</span>
+              <input
+                class="slider"
+                type="range"
+                min="0"
+                max="100"
+                value="${m}"
+                onchange="updateMastery('${s.id}','${t[0]}',this.value)">
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("")}
+  `;
+}
+
+function updateMastery(sid,tid,value){
+
+  data.mastery[sid][tid]=Number(value);
+
+  save();
+  renderAll();
+  toast("Mastery updated ✦");
+}
+
+
+/* ---------- TASKS ---------- */
+
+function createTask(){
+
+  const title=document.getElementById("taskTitle").value.trim();
+  if(!title){
+    toast("Give your mission a name.");
+    return;
+  }
+
+  data.tasks.push({
+    id:uid(),
+    title,
+    subject:document.getElementById("taskSubject").value,
+    due:document.getElementById("taskDue").value || todayISO(),
+    minutes:Number(document.getElementById("taskMinutes").value)||30,
+    type:document.getElementById("taskType").value,
+    done:false,
+    created:new Date().toISOString()
+  });
+
+  save();
+  closeModal("taskModal");
+  clearModal("taskModal");
+  renderAll();
+  toast("Mission created ✦");
+}
+
+function toggleTask(id){
+
+  const t=data.tasks.find(x=>x.id===id);
+  if(!t)return;
+
+  t.done=!t.done;
+  save();
+  renderAll();
+}
+
+function deleteTask(id){
+
+  data.tasks=data.tasks.filter(x=>x.id!==id);
+  save();
+  renderAll();
+}
+
+
+/* ---------- TASK DASHBOARD ---------- */
+let taskDashboardFilter="all";
+
+function setTaskFilter(filter){
+  taskDashboardFilter=filter;
+  document.querySelectorAll("[data-task-filter]").forEach(button=>{
+    button.classList.toggle("active",button.dataset.taskFilter===filter);
+  });
+  renderTaskDashboard();
+}
+
+function renderTaskDashboard(){
+  const tasks=Array.isArray(data.tasks)?data.tasks:[];
+  const open=tasks.filter(t=>!t.done);
+  const due= open.filter(t=>t.due && daysBetween(t.due)<=0);
+  const done=tasks.filter(t=>t.done);
+  document.getElementById("taskOpenCount").textContent=open.length;
+  document.getElementById("taskDueCount").textContent=due.length;
+  document.getElementById("taskDoneCount").textContent=done.length;
+  document.getElementById("taskMinutesCount").textContent=
+    open.reduce((sum,t)=>sum+(Number(t.minutes)||0),0)+"m";
+
+  let shown=tasks.slice();
+  if(taskDashboardFilter==="open")shown=shown.filter(t=>!t.done);
+  if(taskDashboardFilter==="today")shown=shown.filter(t=>!t.done && t.due && daysBetween(t.due)<=0);
+  if(taskDashboardFilter==="done")shown=shown.filter(t=>t.done);
+  shown.sort((a,b)=>{
+    if(Boolean(a.done)!==Boolean(b.done))return a.done?1:-1;
+    return (a.due||"9999-12-31").localeCompare(b.due||"9999-12-31");
+  });
+
+  const el=document.getElementById("taskDashboardList");
+  if(!shown.length){
+    el.innerHTML="<p style='color:var(--muted);font-size:13px'>No missions in this view yet. Add a mission when you're ready. ✦</p>";
+    return;
+  }
+  el.innerHTML=shown.map(t=>{
+    const d=t.due?daysBetween(t.due):null;
+    const dueLabel=!t.due?"No due date":d<0?`OVERDUE · ${Math.abs(d)}d`:d===0?"DUE TODAY":`${d}d left`;
+    const dueClass=!t.due?"info":d<0?"bad":d<=1?"warn":"info";
+    return `<div class="mission task-row">
+      <div style="min-width:0;flex:1">
+        <h4 style="${t.done?"text-decoration:line-through;opacity:.7":""}">${esc(t.title)}</h4>
+        <p>${esc(subjectName(t.subject))} · ${esc(t.type||"Mission")} · ${Number(t.minutes)||0} min</p>
+        <p style="margin-top:5px">Due: ${t.due?esc(formatDate(t.due)):"Not set"}</p>
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:7px;flex-direction:column">
+        <span class="badge ${t.done?"good":dueClass}">${t.done?"COMPLETED":dueLabel}</span>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
+          <button class="btn" onclick="toggleTask('${t.id}')">${t.done?"Reopen":"Complete"}</button>
+          <button class="btn" style="color:var(--bad)" onclick="deleteTask('${t.id}')">Delete</button>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+/* ---------- EXAMS ---------- */
+
+function createExam(){
+
+  const name=document.getElementById("examName").value.trim();
+  const date=document.getElementById("examDate").value;
+
+  if(!name || !date){
+    toast("Add an exam name and date.");
+    return;
+  }
+
+  data.exams.push({
+    id:uid(),
+    name,
+    subject:document.getElementById("examSubject").value,
+    date,
+    time:document.getElementById("examTime").value,
+    duration:document.getElementById("examDuration").value,
+    type:document.getElementById("examType").value,
+    paper:document.getElementById("examPaper").value,
+    notes:document.getElementById("examNotes").value,
+    done:false
+  });
+
+  save();
+  closeModal("examModal");
+  clearModal("examModal");
+  renderAll();
+  toast("Exam scheduled ✦");
+}
+
+function toggleExam(id){
+
+  const e=data.exams.find(x=>x.id===id);
+  if(!e)return;
+
+  e.done=!e.done;
+  save();
+  renderAll();
+}
+
+function deleteExam(id){
+
+  data.exams=data.exams.filter(x=>x.id!==id);
+  save();
+  renderAll();
+}
+
+function renderExams(){
+
+  const el=document.getElementById("examList");
+
+  const exams=[...data.exams]
+    .sort((a,b)=>a.date.localeCompare(b.date));
+
+  if(!exams.length){
+    el.innerHTML="<p style='color:var(--muted)'>No exams scheduled.</p>";
+  }else{
+    el.innerHTML=exams.map(e=>{
+      const d=daysBetween(e.date);
+
+      return `
+        <div class="mission">
+          <div>
+            <h4>${esc(e.name)}</h4>
+            <p>
+              ${esc(subjectName(e.subject))}
+              ${e.paper?" · "+esc(e.paper):""}
+              · ${formatDate(e.date)}
+              ${e.time?" · "+esc(e.time):""}
+            </p>
+
+            <div style="margin-top:7px">
+              <span class="badge lav">${esc(e.type)}</span>
+              ${e.duration?`<span class="badge info">${esc(e.duration)}</span>`:""}
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:7px">
+            <span class="badge ${d<0?"bad":d<=7?"warn":"good"}">
+              ${d<0?"PAST":d===0?"TODAY":d+" DAYS"}
+            </span>
+            <button class="btn" onclick="toggleExam('${e.id}')">
+              ${e.done?"Undo":"Done"}
+            </button>
+            <button class="btn" onclick="deleteExam('${e.id}')">×</button>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  renderCalendar();
+}
+
+function renderCalendar(){
+
+  const el=document.getElementById("calendar");
+  const now=new Date();
+  const year=now.getFullYear();
+  const month=now.getMonth();
+
+  const first=new Date(year,month,1);
+  const last=new Date(year,month+1,0);
+  const start=first.getDay();
+
+  let html="";
+  ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].forEach(d=>{
+    html+=`<div class="cal-head">${d}</div>`;
+  });
+
+  for(let i=0;i<start;i++){
+    html+=`<div class="cal-day"></div>`;
+  }
+
+  for(let d=1;d<=last.getDate();d++){
+
+    const iso=
+      `${year}-${String(month+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+
+    const events=data.exams.filter(e=>e.date===iso);
+
+    html+=`
+      <div class="cal-day">
+        <div class="cal-day-num">${d}</div>
+        ${events.map(e=>`
+          <div class="cal-event">${esc(e.name)}</div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  el.innerHTML=`<div class="calendar">${html}</div>`;
+}
+
+
+/* ---------- HOMEWORK ---------- */
+
+function createHomework(){
+
+  const title=document.getElementById("hwTitle").value.trim();
+  const due=document.getElementById("hwDue").value;
+
+  if(!title || !due){
+    toast("Add an assignment and due date.");
+    return;
+  }
+
+  data.homework.push({
+    id:uid(),
+    title,
+    subject:document.getElementById("hwSubject").value,
+    source:document.getElementById("hwSource").value,
+    due,
+    minutes:Number(document.getElementById("hwMinutes").value)||30,
+    notes:document.getElementById("hwNotes").value,
+    done:false
+  });
+
+  save();
+  closeModal("homeworkModal");
+  clearModal("homeworkModal");
+  renderAll();
+  toast("Homework added ✦");
+}
+
+function toggleHomework(id){
+
+  const x=data.homework.find(x=>x.id===id);
+  if(!x)return;
+
+  x.done=!x.done;
+  save();
+  renderAll();
+}
+
+function deleteHomework(id){
+
+  data.homework=data.homework.filter(x=>x.id!==id);
+  save();
+  renderAll();
+}
+
+let homeworkFilter="All";
+
+function renderHomework(){
+
+  document.getElementById("homeworkFilters").innerHTML=
+    ["All","School","Tuition","Open","Completed"].map(f=>`
+      <button class="filter ${homeworkFilter===f?"active":""}"
+        onclick="homeworkFilter='${f}';renderHomework()">
+        ${f}
+      </button>
+    `).join("");
+
+  let items=[...data.homework];
+
+  if(homeworkFilter==="School")
+    items=items.filter(x=>x.source==="School");
+
+  if(homeworkFilter==="Tuition")
+    items=items.filter(x=>x.source==="Tuition");
+
+  if(homeworkFilter==="Open")
+    items=items.filter(x=>!x.done);
+
+  if(homeworkFilter==="Completed")
+    items=items.filter(x=>x.done);
+
+  items.sort((a,b)=>a.due.localeCompare(b.due));
+
+  const el=document.getElementById("homeworkList");
+
+  if(!items.length){
+    el.innerHTML="<p style='color:var(--muted)'>No homework here.</p>";
+    return;
+  }
+
+  el.innerHTML=items.map(x=>{
+    const d=daysBetween(x.due);
+
+    return `
+      <div class="mission">
+        <div>
+          <h4 style="${x.done?"text-decoration:line-through;color:var(--soft)":""}">
+            ${esc(x.title)}
+          </h4>
+
+          <p>
+            ${esc(subjectName(x.subject))}
+            · ${esc(x.source)}
+            · ${formatDate(x.due)}
+            · ${x.minutes}m
+          </p>
+        </div>
+
+        <div style="display:flex;gap:7px;align-items:center">
+          <span class="badge ${x.done?"good":d<0?"bad":d<=2?"warn":"info"}">
+            ${x.done?"DONE":d<0?"OVERDUE":d===0?"TODAY":d+"d"}
+          </span>
+          <button class="btn" onclick="toggleHomework('${x.id}')">
+            ${x.done?"Undo":"Done"}
+          </button>
+          <button class="btn" onclick="deleteHomework('${x.id}')">×</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+
+/* ---------- STUDY ---------- */
+
+function createStudy(){
+
+  const minutes=Number(document.getElementById("studyMinutes").value);
+
+  if(!minutes || minutes<=0){
+    toast("Add a valid study duration.");
+    return;
+  }
+
+  data.studies.push({
+    id:uid(),
+    date:todayISO(),
+    subject:document.getElementById("studySubject").value,
+    minutes,
+    mode:document.getElementById("studyMode").value,
+    notes:document.getElementById("studyNotes").value,
+    topic:""
+  });
+
+  save();
+  closeModal("studyModal");
+  clearModal("studyModal");
+  renderAll();
+  toast("Study session logged ✦");
+}
+
+function deleteStudy(id){
+
+  data.studies=data.studies.filter(x=>x.id!==id);
+  save();
+  renderAll();
+}
+
+function renderStudy(){
+
+  const total=data.studies.reduce((a,x)=>a+Number(x.minutes||0),0);
+
+  document.getElementById("totalStudy").textContent=
+    `${Math.floor(total/60)}h ${total%60}m`;
+
+  document.getElementById("studyCount").textContent=data.studies.length;
+
+  document.getElementById("avgStudy").textContent=
+    `${data.studies.length?Math.round(total/data.studies.length):0}m`;
+
+  const items=[...data.studies].sort((a,b)=>b.date.localeCompare(a.date));
+
+  const el=document.getElementById("studyList");
+
+  if(!items.length){
+    el.innerHTML="<p style='color:var(--muted)'>No sessions logged yet.</p>";
+    return;
+  }
+
+  el.innerHTML=items.map(x=>`
+    <div class="mission">
+      <div>
+        <h4>${esc(subjectName(x.subject))} · ${esc(x.mode)}</h4>
+        <p>${formatDate(x.date)} · ${x.minutes} minutes</p>
+        ${x.notes?`<p style="margin-top:5px">${esc(x.notes)}</p>`:""}
+      </div>
+      <button class="btn" onclick="deleteStudy('${x.id}')">×</button>
+    </div>
+  `).join("");
+}
+
+
+/* ---------- PAPERS ---------- */
+
+function createPaper(){
+
+  const score=Number(document.getElementById("paperScore").value);
+  const total=Number(document.getElementById("paperTotal").value);
+
+  if(!total || score<0){
+    toast("Add a valid score and total.");
+    return;
+  }
+
+  data.papers.push({
+    id:uid(),
+    date:todayISO(),
+    subject:document.getElementById("paperSubject").value,
+    component:document.getElementById("paperComponent").value,
+    year:Number(document.getElementById("paperYear").value),
+    session:document.getElementById("paperSession").value,
+    score,
+    total,
+    reflection:document.getElementById("paperReflection").value
+  });
+
+  save();
+  closeModal("paperModal");
+  clearModal("paperModal");
+  renderAll();
+  toast("Past paper recorded ✦");
+}
+
+function deletePaper(id){
+
+  data.papers=data.papers.filter(x=>x.id!==id);
+  save();
+  renderAll();
+}
+
+function renderPapers(){
+
+  const el=document.getElementById("paperList");
+
+  if(!data.papers.length){
+    el.innerHTML="<p style='color:var(--muted)'>No papers logged yet.</p>";
+    return;
+  }
+
+  const items=[...data.papers].sort((a,b)=>b.date.localeCompare(a.date));
+
+  el.innerHTML=`
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Component</th>
+            <th>Paper</th>
+            <th>Score</th>
+            <th>%</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          ${items.map(x=>{
+            const pct=Math.round(x.score/x.total*100);
+
+            return `
+              <tr>
+                <td>${esc(subjectName(x.subject))}</td>
+                <td>${esc(x.component||"—")}</td>
+                <td>${x.year} · ${esc(x.session)}</td>
+                <td>${x.score}/${x.total}</td>
+                <td>
+                  <span class="badge ${pct>=80?"good":pct>=60?"warn":"bad"}">
+                    ${pct}%
+                  </span>
+                </td>
+                <td>
+                  <button class="btn" onclick="deletePaper('${x.id}')">×</button>
+                </td>
+              </tr>
+            `;
+          }).join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+
+/* ---------- MISTAKES ---------- */
+
+function createMistake(){
+
+  const title=document.getElementById("mistakeTitle").value.trim();
+
+  if(!title){
+    toast("Describe the mistake.");
+    return;
+  }
+
+  data.mistakes.push({
+    id:uid(),
+    date:todayISO(),
+    subject:document.getElementById("mistakeSubject").value,
+    category:document.getElementById("mistakeCategory").value,
+    title,
+    correction:document.getElementById("mistakeCorrection").value,
+    fixed:false,
+    topic:""
+  });
+
+  save();
+  closeModal("mistakeModal");
+  clearModal("mistakeModal");
+  renderAll();
+  toast("Mistake added to the vault.");
+}
+
+function toggleMistake(id){
+
+  const x=data.mistakes.find(x=>x.id===id);
+  if(!x)return;
+
+  x.fixed=!x.fixed;
+  save();
+  renderAll();
+}
+
+function deleteMistake(id){
+
+  data.mistakes=data.mistakes.filter(x=>x.id!==id);
+  save();
+  renderAll();
+}
+
+let mistakeFilter="All";
+
+function renderMistakes(){
+
+  document.getElementById("mistakeFilters").innerHTML=
+    ["All","Open","Fixed","Knowledge Gap","Application Gap","Execution Error","Exam Technique"].map(f=>`
+      <button class="filter ${mistakeFilter===f?"active":""}"
+        onclick="mistakeFilter='${f}';renderMistakes()">
+        ${f}
+      </button>
+    `).join("");
+
+  let items=[...data.mistakes];
+
+  if(mistakeFilter==="Open")
+    items=items.filter(x=>!x.fixed);
+
+  else if(mistakeFilter==="Fixed")
+    items=items.filter(x=>x.fixed);
+
+  else if(!["All"].includes(mistakeFilter))
+    items=items.filter(x=>x.category===mistakeFilter);
+
+  items.sort((a,b)=>b.date.localeCompare(a.date));
+
+  const el=document.getElementById("mistakeList");
+
+  if(!items.length){
+    el.innerHTML="<p style='color:var(--muted)'>No mistakes in this category.</p>";
+    return;
+  }
+
+  el.innerHTML=items.map(x=>`
+    <div class="mistake">
+      <div style="display:flex;justify-content:space-between;gap:10px">
+        <div>
+          <div class="mistake-title">${esc(x.title)}</div>
+          <div style="color:var(--muted);font-size:10px;margin-top:4px">
+            ${esc(subjectName(x.subject))} · ${formatDate(x.date)}
+          </div>
+        </div>
+
+        <span class="badge ${x.fixed?"good":"bad"}">
+          ${x.fixed?"FIXED":"OPEN"}
+        </span>
+      </div>
+
+      <div class="mistake-meta">
+        <span class="badge warn">${esc(x.category)}</span>
+      </div>
+
+      ${x.correction?`
+        <div style="margin-top:11px;padding:11px;border-radius:10px;background:#111528;color:#C8CADB;font-size:11px;line-height:1.7">
+          <b style="color:var(--text)">Correction:</b>
+          ${esc(x.correction)}
+        </div>
+      `:""}
+
+      <div style="display:flex;gap:7px;margin-top:12px">
+        <button class="btn" onclick="toggleMistake('${x.id}')">
+          ${x.fixed?"Reopen":"Mark fixed"}
+        </button>
+        <button class="btn" onclick="deleteMistake('${x.id}')">Delete</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+
+/* ---------- ANALYTICS ---------- */
+
+function renderAnalytics(){
+
+  document.getElementById("analyticsMastery").innerHTML=
+    SUBJECTS.map(s=>{
+      const m=avg(s.topics.map(t=>topicMastery(s.id,t[0])));
+
+      return `
+        <div class="progress-row">
+          <div class="progress-meta">
+            <span>${s.name}</span>
+            <span>${m}%</span>
+          </div>
+          <div class="progress">
+            <div style="width:${m}%"></div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+  const papersBySubject=SUBJECTS.map(s=>{
+    const p=data.papers.filter(x=>x.subject===s.id);
+    const avgPct=p.length
+      ? avg(p.map(x=>x.score/x.total*100))
+      : 0;
+
+    return {s,avgPct,count:p.length};
+  });
+
+  document.getElementById("analyticsPapers").innerHTML=
+    papersBySubject.map(x=>`
+      <div class="progress-row">
+        <div class="progress-meta">
+          <span>${x.s.name}</span>
+          <span>${x.count?x.avgPct+"%":"—"}</span>
+        </div>
+        <div class="progress">
+          <div style="width:${x.avgPct}%"></div>
+        </div>
+      </div>
+    `).join("");
+
+  renderRoadmap();
+}
+
+function renderRoadmap(){
+
+  const phases=[
+    ["FOUNDATION","Build strong understanding of the A-Level concepts.",25],
+    ["AS CONSOLIDATION","Secure AS material through recall and application.",50],
+    ["A2 DEVELOPMENT","Build advanced content while retaining AS.",70],
+    ["FULL SYLLABUS","Complete and consolidate the complete specification.",85],
+    ["EXAM READINESS","Timed papers, correction and targeted revision.",100]
+  ];
+
+  const current=calculateOverallMastery();
+
+  document.getElementById("roadmap").innerHTML=
+    phases.map((p,i)=>`
+      <div class="mission">
+        <div>
+          <h4>${i+1}. ${p[0]}</h4>
+          <p>${p[1]}</p>
+        </div>
+
+        <span class="badge ${current>=p[2]?"good":"info"}">
+          ${current>=p[2]?"COMPLETE":"UP NEXT"}
+        </span>
+      </div>
+    `).join("");
+}
+
+
+/* ---------- AETHER PAGE ---------- */
+
+function renderAether(){
+
+  const scores=allTopicScores();
+  const item=scores[0];
+
+  document.getElementById("aetherPriorityCount").textContent=
+    scores.filter(x=>x.priority>=45).length;
+
+  document.getElementById("aetherRetentionCount").textContent=
+    scores.filter(x=>x.risk>=60).length;
+
+  document.getElementById("aetherMistakeCount").textContent=
+    data.mistakes.filter(x=>!x.fixed).length;
+
+  if(!item){
+    document.getElementById("aetherMain").innerHTML=
+      "<p style='color:var(--muted)'>AETHER is waiting for academic data.</p>";
+    return;
+  }
+
+  const reasons=[];
+
+  if(item.mastery<50)reasons.push("low mastery");
+  if(item.risk>=60)reasons.push("retention risk");
+  if(item.mistakes)reasons.push(`${item.mistakes} unresolved mistake(s)`);
+  if(data.exams.some(e=>e.subject===item.subject.id && daysBetween(e.date)>=0 && daysBetween(e.date)<=21))
+    reasons.push("assessment approaching");
+
+  document.getElementById("aetherMain").innerHTML=`
+    <div style="font-size:10px;color:var(--ice);font-weight:800;letter-spacing:.14em">
+      NEXT BEST MOVE
+    </div>
+
+    <h3 style="font-size:23px;margin:8px 0">
+      ${esc(item.subject.name)}
+    </h3>
+
+    <div style="font-size:16px;color:var(--lav);font-weight:700;margin-bottom:16px">
+      ${esc(item.topic[1])}
+    </div>
+
+    <div class="grid" style="gap:8px">
+      ${reasons.length?reasons.map(r=>`
+        <div style="padding:9px 11px;background:#111528;border-radius:9px;color:var(--muted);font-size:11px">
+          ◇ ${esc(r)}
+        </div>
+      `).join(""):`
+        <div style="padding:9px 11px;background:#111528;border-radius:9px;color:var(--muted);font-size:11px">
+          ◇ strongest current priority signal
+        </div>
+      `}
+    </div>
+
+    <div style="margin-top:20px">
+      <div class="progress-meta">
+        <span>Current mastery</span>
+        <span>${item.mastery}%</span>
+      </div>
+
+      <div class="progress">
+        <div style="width:${item.mastery}%"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;padding:15px;border:1px solid var(--border);border-radius:14px">
+      <div style="font-weight:700;font-size:12px;margin-bottom:7px">
+        Suggested mission
+      </div>
+
+      <div style="font-size:11px;color:var(--muted);line-height:1.8">
+        Active recall → exam questions → mark strictly → classify mistakes → revisit after spacing.
+      </div>
+    </div>
+  `;
+}
+
+
+/* ---------- SETTINGS ---------- */
+
+function saveSettings(){
+
+  data.profile.name=document.getElementById("settingName").value.trim() || "Scholar";
+  data.profile.target=document.getElementById("settingTarget").value.trim() || "A*";
+  data.profile.year=Number(document.getElementById("settingYear").value)||2028;
+
+  save();
+  renderAll();
+  toast("Profile saved ✦");
+}
+
+function renderSettings(){
+
+  document.getElementById("settingName").value=data.profile.name;
+  document.getElementById("settingTarget").value=data.profile.target;
+  document.getElementById("settingYear").value=data.profile.year;
+
+  document.getElementById("sidebarTarget").textContent=
+    `${data.profile.target} pathway`;
+}
+
+
+/* ---------- DATA ---------- */
+
+function exportData(){
+
+  const blob=new Blob(
+    [JSON.stringify(data,null,2)],
+    {type:"application/json"}
+  );
+
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+
+  a.href=url;
+  a.download="ASTRAEA-backup.json";
+  a.click();
+
+  URL.revokeObjectURL(url);
+
+  toast("ASTRAEA backup exported.");
+}
+
+function importData(event){
+
+  const file=event.target.files[0];
+  if(!file)return;
+
+  const reader=new FileReader();
+
+  reader.onload=e=>{
+    try{
+      const imported=JSON.parse(e.target.result);
+
+      data={
+        ...freshData(),
+        ...imported,
+        profile:{
+          ...freshData().profile,
+          ...(imported.profile||{})
+        }
+      };
+
+      save();
+      renderAll();
+      toast("ASTRAEA restored ✦");
+
+    }catch(err){
+      toast("That file isn't a valid ASTRAEA backup.");
+    }
+  };
+
+  reader.readAsText(file);
+}
+
+function resetData(){
+
+  if(!confirm("Reset all ASTRAEA data? This cannot be undone."))return;
+
+  data=freshData();
+  save();
+  renderAll();
+  toast("ASTRAEA reset.");
+}
+
+
+/* ---------- UTIL ---------- */
+
+function clearModal(id){
+
+  const modal=document.getElementById(id);
+
+  modal.querySelectorAll("input,textarea").forEach(el=>{
+    if(el.type!=="file")el.value="";
+  });
+}
+
+function toast(message){
+
+  const el=document.getElementById("toast");
+
+  el.textContent=message;
+  el.classList.add("show");
+
+  clearTimeout(window.__toast);
+  window.__toast=setTimeout(()=>{
+    el.classList.remove("show");
+  },2200);
+}
+
+
+/* ---------- RENDER ---------- */
+
+function renderAll(){
+
+  populateSelects();
+
+  renderDashboard();
+  renderTaskDashboard();
+  renderSyllabus();
+  renderExams();
+  renderHomework();
+  renderStudy();
+  renderPapers();
+  renderMistakes();
+  renderAether();
+  renderAnalytics();
+  renderSettings();
+}
+
+
+/* ---------- START ---------- */
+
+renderAll();
+initialiseAstraeaCloud();
+
+/* Update date-sensitive information when the page stays open overnight. */
+setInterval(()=>{
+  renderDashboard();
+  renderExams();
+  renderHomework();
+  renderAether();
+},60000);
+
+</script>
+
+</body>
+</html>
