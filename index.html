@@ -820,6 +820,28 @@ label{
 .cloud-hidden{display:none!important}
 @media(max-width:720px){.cloud-form{grid-template-columns:1fr 1fr}.cloud-form .btn{width:100%}}
 @media(max-width:440px){.cloud-form{grid-template-columns:1fr}}
+
+/* Phase 3: keep exam intelligence compact rather than using a large banner */
+.exam-briefing-compact{
+  margin:0 0 14px;
+  padding:12px 14px;
+  border:1px solid var(--line, var(--border));
+  border-radius:14px;
+  background:rgba(24,28,48,.62);
+}
+.exam-briefing-title{
+  display:flex;align-items:center;gap:7px;
+  margin:0 0 8px;
+  color:var(--muted);
+  font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+}
+.exam-briefing-title span{color:var(--lav)}
+.exam-briefing-compact #examBriefingContent{margin-top:0!important}
+.exam-briefing-compact #examBriefingContent .grid{margin-top:8px!important;gap:8px}
+.exam-briefing-compact #examBriefingContent .card{padding:9px!important;border-radius:10px}
+.exam-briefing-compact #examBriefingContent .stat-number{font-size:20px}
+.exam-briefing-compact #examBriefingContent .mission{margin-top:8px!important;padding:10px}
+.exam-briefing-compact #examBriefingContent .badge.lav{font-size:10px}
 </style>
 </head>
 
@@ -841,11 +863,15 @@ label{
   <nav class="nav">
     <button class="active" data-view="dashboard"><span class="nav-icon">✦</span>Command Centre</button>
     <button data-view="syllabus"><span class="nav-icon">◇</span>Syllabus</button>
+    <button data-view="journey"><span class="nav-icon">⌁</span>Academic Journey</button>
     <button data-view="exams"><span class="nav-icon">◷</span>Exams</button>
     <button data-view="homework"><span class="nav-icon">□</span>Homework</button>
     <button data-view="tasks"><span class="nav-icon">✓</span>Task Dashboard</button>
     <button data-view="study"><span class="nav-icon">◌</span>Study Sessions</button>
     <button data-view="papers"><span class="nav-icon">▤</span>Past Papers</button>
+    <button data-view="weekly"><span class="nav-icon">◷</span>Weekly Briefing</button>
+    <button data-view="actionengine"><span class="nav-icon">☑</span>Adaptive Action Engine</button>
+    <button data-view="flightdeck"><span class="nav-icon">✧</span>Future Flight Deck</button>
     <button data-view="mistakes"><span class="nav-icon">△</span>Mistake Vault</button>
     <button data-view="aether"><span class="nav-icon">✧</span>AETHER</button>
     <button data-view="analytics"><span class="nav-icon">⌁</span>Analytics</button>
@@ -984,6 +1010,42 @@ label{
 </section>
 
 
+<!-- TWO-YEAR ACADEMIC JOURNEY -->
+<section class="view" id="journey">
+  <h2>Academic Journey</h2>
+  <p class="subtitle">Your two-year A-Level pathway, measured from the work you actually log.</p>
+  <div class="filters" id="journeyYearFilters" style="margin-bottom:16px">
+    <button class="filter active" data-journey-year="2027" onclick="setJourneyYear(2027)">Grade 12 · 2027</button>
+    <button class="filter" data-journey-year="2028" onclick="setJourneyYear(2028)">Grade 13 · 2028</button>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="section-head" style="margin-bottom:6px">
+      <h3 id="journeyYearTitle">Grade 12 · 2027</h3>
+      <span class="badge lav" id="journeyYearBadge">FOUNDATION YEAR</span>
+    </div>
+    <p class="muted" id="journeyYearDescription" style="margin:0">Build the foundations: understand the syllabus, establish routines and strengthen core skills.</p>
+  </div>
+  <div class="grid stats-grid" id="journeyStats">
+    <div class="card"><div class="stat-icon">◷</div><div class="stat-number" id="journeyExams">0</div><div class="stat-label">Assessments scheduled</div></div>
+    <div class="card"><div class="stat-icon">✓</div><div class="stat-number" id="journeyTasks">0/0</div><div class="stat-label">Missions completed</div></div>
+    <div class="card"><div class="stat-icon">◌</div><div class="stat-number" id="journeyStudy">0h</div><div class="stat-label">Study time logged</div></div>
+    <div class="card"><div class="stat-icon">▤</div><div class="stat-number" id="journeyPapers">0</div><div class="stat-label">Practice papers logged</div></div>
+  </div>
+  <div class="grid two-grid" style="margin-top:16px">
+    <div class="card">
+      <h3>Practice evidence</h3>
+      <div class="stat-number" id="journeyPaperAverage">—</div>
+      <div class="stat-label">Weighted average of papers logged in this calendar year</div>
+      <p class="muted" style="margin-top:10px">Calculated from marks earned ÷ total marks across valid paper logs. It is not a predicted Cambridge grade.</p>
+    </div>
+    <div class="card">
+      <h3>Year focus</h3>
+      <p id="journeyFocus" style="margin:8px 0 0">Log your work to build a clearer picture of your progress.</p>
+      <p class="muted" style="margin-top:10px">ASTRAEA only counts dated records for the selected calendar year. Syllabus mastery remains a shared tracker until year-specific topic progress is introduced.</p>
+    </div>
+  </div>
+</section>
+
 <!-- TASK DASHBOARD -->
 <section class="view" id="tasks">
   <h2>Task Dashboard</h2>
@@ -1009,7 +1071,11 @@ label{
 <!-- SYLLABUS -->
 <section class="view" id="syllabus">
   <h2>Syllabus Observatory</h2>
-  <p class="subtitle">Your complete A-Level curriculum, mastery and retention system.</p>
+  <p class="subtitle">Your A-Level curriculum, mastery and retention system.</p>
+  <div class="card" style="border:1px solid var(--line);margin-bottom:16px">
+    <strong>✦ Syllabus verification notice</strong>
+    <p class="muted" style="margin:6px 0 0">ASTRAEA uses syllabus-year labels, source links and topic filters. Check each subject’s source-status note: mastery percentages describe only the topics currently listed, not guaranteed full-syllabus coverage.</p>
+  </div>
 
   <div class="filters" id="subjectFilters"></div>
 
@@ -1025,6 +1091,11 @@ label{
   <div class="section-head">
     <div class="filters" id="examFilters"></div>
     <button class="btn primary" onclick="openModal('examModal')">+ Add Exam</button>
+  </div>
+
+  <div id="examBriefing" class="exam-briefing-compact">
+    <div class="exam-briefing-title"><span aria-hidden="true">✦</span> Next exam</div>
+    <div id="examBriefingContent"></div>
   </div>
 
   <div class="grid two-grid">
@@ -1098,11 +1169,94 @@ label{
     <button class="btn primary" onclick="openModal('paperModal')">+ Log Paper</button>
   </div>
 
-  <div class="card">
+  <div class="grid three-grid" style="margin:18px 0">
+    <div class="card"><div class="stat-label">Papers logged</div><div class="stat-number" id="labPaperCount">0</div></div>
+    <div class="card"><div class="stat-label">Overall average</div><div class="stat-number" id="labAverage">—</div></div>
+    <div class="card"><div class="stat-label">Best attempt</div><div class="stat-number" id="labBest">—</div></div>
+  </div>
+  <div class="grid two-grid">
+    <div class="card"><h3>Subject performance</h3><p class="muted">Average percentage across your recorded papers for each subject.</p><div id="paperSubjectInsights"></div></div>
+    <div class="card"><h3>Laboratory notes</h3><p class="muted">Use reflections to identify repeat errors. Record the topic or question numbers you want to revisit when logging a paper.</p><div id="paperLabInsights"></div></div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <div class="section-head"><h3>Paper record</h3><select id="paperFilterSubject" onchange="renderPapers()" aria-label="Filter papers by subject" style="max-width:220px"><option value="all">All subjects</option></select></div>
     <div id="paperList"></div>
   </div>
 </section>
 
+<!-- WEEKLY COMMAND BRIEFING -->
+<section class="view" id="weekly">
+  <h2>Weekly Command Briefing</h2>
+  <p class="subtitle">A weekly review built from your actual ASTRAEA records — no invented progress or mood tracking.</p>
+  <div class="section-head">
+    <div><span class="badge lav" id="weeklyRange">This week</span></div>
+    <button class="btn" onclick="renderWeeklyBriefing();toast('Weekly briefing refreshed ✦')">↻ Refresh briefing</button>
+  </div>
+  <div class="grid three-grid" style="margin:18px 0">
+    <div class="card"><div class="stat-label">Study time this week</div><div class="stat-number" id="weeklyStudyTime">0m</div></div>
+    <div class="card"><div class="stat-label">Study sessions</div><div class="stat-number" id="weeklyStudyCount">0</div></div>
+    <div class="card"><div class="stat-label">Papers logged</div><div class="stat-number" id="weeklyPaperCount">0</div></div>
+  </div>
+  <div class="grid two-grid">
+    <div class="card"><h3>✦ Wins from your records</h3><div id="weeklyWins"></div></div>
+    <div class="card"><h3>⌁ Suggested focus</h3><div id="weeklyFocus"></div></div>
+  </div>
+  <div class="grid two-grid" style="margin-top:18px">
+    <div class="card"><h3>Subject paper performance</h3><p class="muted">Based only on papers logged during this week.</p><div id="weeklySubjects"></div></div>
+    <div class="card"><h3>Next-week checklist</h3><p class="muted">A suggested checklist based on your recorded work. Use it to plan; it does not create tasks automatically.</p><div id="weeklyChecklist"></div></div>
+  </div>
+</section>
+
+<!-- ADAPTIVE ACTION ENGINE -->
+<section class="view" id="actionengine">
+  <h2>Adaptive Action Engine</h2>
+  <p class="subtitle">Suggested next steps generated from your recorded study sessions, past-paper results and open mistakes. Nothing is added to your tasks until you choose it.</p>
+  <div class="section-head">
+    <div><span class="badge lav">Evidence-led suggestions</span></div>
+    <button class="btn" onclick="renderAdaptiveActions();toast('Suggestions refreshed ✦')">↻ Refresh suggestions</button>
+  </div>
+  <div class="grid three-grid" style="margin:18px 0">
+    <div class="card"><div class="stat-label">Open mistakes</div><div class="stat-number" id="actionOpenMistakes">0</div></div>
+    <div class="card"><div class="stat-label">Papers analysed</div><div class="stat-number" id="actionPapersAnalysed">0</div></div>
+    <div class="card"><div class="stat-label">Suggestions available</div><div class="stat-number" id="actionSuggestionCount">0</div></div>
+  </div>
+  <div class="card"><div id="adaptiveActionList"></div></div>
+  <p class="muted" style="margin-top:12px">Recommendations use only information you've logged. Overall paper scores cannot identify a weak topic unless you record topic or question details. Review each suggestion before adding it to your Task Dashboard.</p>
+</section>
+
+<!-- FUTURE FLIGHT DECK -->
+<section class="view" id="flightdeck">
+  <h2>University & Future Flight Deck</h2>
+  <p class="subtitle">A calm command centre for future opportunities — universities, scholarships, deadlines and achievements.</p>
+  <div class="grid three-grid" style="margin:18px 0">
+    <div class="card"><div class="stat-label">Opportunities saved</div><div class="stat-number" id="flightOpportunityCount">0</div></div>
+    <div class="card"><div class="stat-label">Upcoming deadlines</div><div class="stat-number" id="flightDeadlineCount">0</div></div>
+    <div class="card"><div class="stat-label">Achievements logged</div><div class="stat-number" id="flightAchievementCount">0</div></div>
+  </div>
+  <div class="grid two-grid">
+    <div class="card">
+      <h3>＋ Add an opportunity</h3>
+      <div class="field"><label>Type</label><select id="flightType"><option>University</option><option>Scholarship</option><option>Competition</option><option>Programme / Summer School</option><option>Project / Internship</option></select></div>
+      <div class="field"><label>Name</label><input id="flightName" placeholder="e.g. University or scholarship name"></div>
+      <div class="form-grid"><div class="field"><label>Deadline (optional)</label><input id="flightDeadline" type="date"></div><div class="field"><label>Status</label><select id="flightStatus"><option>Researching</option><option>Interested</option><option>Preparing</option><option>Applied</option><option>Accepted</option><option>Not pursuing</option></select></div></div>
+      <div class="field"><label>Official link (optional)</label><input id="flightLink" type="url" placeholder="https://..."></div>
+      <div class="field"><label>Requirements / notes</label><textarea id="flightNotes" placeholder="Eligibility, documents, subjects, questions to research…"></textarea></div>
+      <button class="btn primary" onclick="createFlightOpportunity()">Save Opportunity</button>
+    </div>
+    <div class="card">
+      <h3>✦ Log an achievement</h3>
+      <div class="field"><label>Achievement / project</label><input id="achievementName" placeholder="e.g. Competition, certificate, project"></div>
+      <div class="form-grid"><div class="field"><label>Date</label><input id="achievementDate" type="date"></div><div class="field"><label>Category</label><select id="achievementType"><option>Academic</option><option>Competition</option><option>Leadership</option><option>Extracurricular</option><option>Project</option><option>Certificate</option><option>Volunteering</option></select></div></div>
+      <div class="field"><label>Details / evidence</label><textarea id="achievementNotes" placeholder="What you did, result, skills demonstrated, certificate location…"></textarea></div>
+      <button class="btn primary" onclick="createFlightAchievement()">Save Achievement</button>
+      <p class="muted" style="margin-top:12px">Keep details factual and useful for future applications. ASTRAEA does not submit applications for you.</p>
+    </div>
+  </div>
+  <div class="grid two-grid">
+    <div class="card"><h3>Opportunity tracker</h3><div id="flightOpportunityList"></div></div>
+    <div class="card"><h3>Achievement archive</h3><div id="flightAchievementList"></div></div>
+  </div>
+</section>
 
 <!-- MISTAKES -->
 <section class="view" id="mistakes">
@@ -1174,6 +1328,37 @@ label{
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="section-head">
+      <div>
+        <h3 style="margin-bottom:4px">Study Intelligence Queue</h3>
+        <p class="muted" style="margin:0">A ranked shortlist using mastery, retention, linked open mistakes, upcoming assessments and recorded paper performance.</p>
+      </div>
+    </div>
+    <div id="studyIntelligenceQueue"></div>
+  </div>
+
+  <div class="card" style="margin-top:18px" id="adaptiveRevisionCard">
+    <div class="section-head" style="align-items:flex-start;gap:14px;flex-wrap:wrap">
+      <div>
+        <h3 style="margin-bottom:4px">Adaptive Revision Plan</h3>
+        <p class="muted" style="margin:0">A focused plan built from your topic priorities, retention risk and unresolved mistakes.</p>
+      </div>
+      <div class="actions" style="margin:0;align-items:center">
+        <label for="revisionBudget" class="muted" style="font-size:12px">Today's study time</label>
+        <select id="revisionBudget" style="width:auto;min-width:112px">
+          <option value="30">30 minutes</option>
+          <option value="45" selected>45 minutes</option>
+          <option value="60">1 hour</option>
+          <option value="90">1.5 hours</option>
+          <option value="120">2 hours</option>
+        </select>
+        <button class="btn primary" onclick="generateAdaptivePlan()">Build my plan ✦</button>
+      </div>
+    </div>
+    <div id="adaptiveRevisionPlan" style="margin-top:14px"></div>
   </div>
 
   <div class="grid three-grid" style="margin-top:18px">
@@ -1475,6 +1660,11 @@ label{
     </div>
 
     <div class="field">
+      <label>Syllabus topic (optional)</label>
+      <select id="studyTopic"><option value="">Not linked to a topic</option></select>
+    </div>
+
+    <div class="field">
       <label>Minutes</label>
       <input id="studyMinutes" type="number" value="45">
     </div>
@@ -1552,8 +1742,12 @@ label{
   </div>
 
   <div class="field">
+    <label>Topics / question numbers to revisit (optional)</label>
+    <input id="paperFocusTopics" placeholder="e.g. Q3 vectors; Q5 uncertainties; equilibrium">
+  </div>
+  <div class="field">
     <label>Reflection</label>
-    <textarea id="paperReflection" placeholder="What went wrong? What went well?"></textarea>
+    <textarea id="paperReflection" placeholder="What went well? What caused lost marks? What will you do differently next time?"></textarea>
   </div>
 
   <div class="actions">
@@ -1575,6 +1769,11 @@ label{
     <div class="field">
       <label>Subject</label>
       <select id="mistakeSubject"></select>
+    </div>
+
+    <div class="field">
+      <label>Related syllabus topic (optional)</label>
+      <select id="mistakeTopic"><option value="">Not linked to a topic</option></select>
     </div>
 
     <div class="field">
@@ -1648,163 +1847,159 @@ const KEY="ASTRAEA_ALEVEL_DATA_V1";
 
 const SUBJECTS=[
   {
-    id:"physics",
-    name:"Physics",
-    code:"9702",
-    icon:"⚡",
+    id:"physics", name:"Physics", code:"9702", icon:"⚡",
+    syllabusYear:"2028–2030",
+    sourceStatus:"Official 2028–2030 topic headings mapped; learning-outcome detail still needs a full pass.",
+    sourceUrl:"https://www.cambridgeinternational.org/Images/744626-2028-2030-syllabus.pdf",
+    topicMode:"level",
     topics:[
-      ["1","Physical quantities and units","SI units, prefixes, scalars and vectors, measurement"],
-      ["2","Kinematics","Motion, graphs, acceleration, projectiles"],
-      ["3","Dynamics","Forces, momentum, Newton's laws"],
-      ["4","Forces, density and pressure","Density, pressure, upthrust"],
-      ["5","Work, energy and power","Energy transfer, work, power, efficiency"],
-      ["6","Deformation of solids","Stress, strain, Young modulus, elastic behaviour"],
-      ["7","Waves","Wave properties, superposition, diffraction, interference"],
-      ["8","Superposition","Stationary waves, phase, coherence"],
-      ["9","Electric fields","Field strength, potential, energy"],
-      ["10","Current of electricity","Charge, current, resistance, circuits"],
-      ["11","D.C. circuits","Kirchhoff's laws, potential dividers, internal resistance"],
-      ["12","Particle physics","Particles, antiparticles, interactions"],
-      ["13","Quantum physics","Photons, photoelectric effect, wave-particle duality"],
-      ["14","Energy and temperature","Thermal energy, temperature, specific heat"],
-      ["15","Ideal gases","Molecular model, pressure, temperature"],
-      ["16","Oscillations","Simple harmonic motion, energy, damping"],
-      ["17","Gravitational fields","Field strength, potential, orbits"],
-      ["18","Astrophysics","Stars, luminosity, spectra, Hubble law"],
-      ["19","Nuclear physics","Radioactivity, decay, binding energy"],
-      ["20","Medical physics","Imaging, ultrasound, radiation"],
-      ["21","Electronics","Semiconductors, diodes, transistors, logic"],
-      ["22","Capacitance","Charging, discharging, energy"],
-      ["23","Magnetic fields","Force on currents and moving charges"],
-      ["24","Electromagnetic induction","Flux, Faraday's law, Lenz's law"],
-      ["25","Alternating currents","AC, transformers, rectification"],
-      ["26","Further mechanics","Circular motion, gravitational systems, momentum"],
-      ["27","Further waves","Interference, diffraction, polarisation"],
-      ["28","Further thermal physics","Entropy and thermodynamic ideas"]
+      ["1","Physical quantities and units","Quantities, SI units, errors and uncertainties, scalars and vectors","AS"],
+      ["2","Kinematics","Equations of motion, graphs and motion in a uniform gravitational field","AS"],
+      ["3","Dynamics","Momentum, Newton’s laws, non-uniform motion and conservation of momentum","AS"],
+      ["4","Forces, density and pressure","Turning effects, equilibrium, density and pressure","AS"],
+      ["5","Work, energy and power","Work, energy transfer, power and efficiency","AS"],
+      ["6","Deformation of solids","Hooke’s law, stress, strain and Young modulus","AS"],
+      ["7","Waves","Progressive waves, electromagnetic spectrum and wave properties","AS"],
+      ["8","Superposition","Stationary waves, diffraction and interference","AS"],
+      ["9","Electricity","Charge, current, potential difference, resistance and resistivity","AS"],
+      ["10","D.C. circuits","Electromotive force, internal resistance, Kirchhoff’s laws and potential dividers","AS"],
+      ["11","Particle physics","Atoms, nuclei, radiation and fundamental particles","AS"],
+      ["12","Motion in a circle","Angular motion and centripetal acceleration","A Level"],
+      ["13","Gravitational fields","Gravitational force, field strength, potential and orbits","A Level"],
+      ["14","Temperature","Thermal equilibrium, temperature scales and specific heat capacity","A Level"],
+      ["15","Ideal gases","Moles, equation of state and kinetic theory","A Level"],
+      ["16","Thermodynamics","Internal energy and the first law of thermodynamics","A Level"],
+      ["17","Oscillations","Simple harmonic motion, energy, damping and resonance","A Level"],
+      ["18","Electric fields","Electric field strength, potential and uniform fields","A Level"],
+      ["19","Capacitance","Capacitors, charging, discharging and energy stored","A Level"],
+      ["20","Magnetic fields","Magnetic forces on currents and moving charges","A Level"],
+      ["21","Electromagnetic induction","Magnetic flux, Faraday’s law and Lenz’s law","A Level"],
+      ["22","Alternating currents","AC circuits, transformers and rectification","A Level"],
+      ["23","Quantum physics","Photons, photoelectric effect and wave-particle duality","A Level"],
+      ["24","Nuclear physics","Radioactive decay, nuclear energy and binding energy","A Level"],
+      ["25","Medical physics","Medical imaging and related applications","A Level"],
+      ["26","Astronomy and cosmology","Stars, the expanding Universe and cosmological evidence","A Level"]
     ]
   },
-
   {
-    id:"chemistry",
-    name:"Chemistry",
-    code:"9701",
-    icon:"⚗",
+    id:"chemistry", name:"Chemistry", code:"9701", icon:"⚗",
+    syllabusYear:"2028–2030",
+    sourceStatus:"Official 2028–2030 topic headings and AS/A Level split mapped; learning-outcome detail still needs a full pass.",
+    sourceUrl:"https://www.cambridgeinternational.org/Images/744624-2028-2030-syllabus.pdf",
+    topicMode:"level",
     topics:[
-      ["1","Atomic structure","Particles, isotopes, electron configuration"],
-      ["2","Atoms, molecules and stoichiometry","Moles, formulae, equations, calculations"],
-      ["3","Enthalpy changes","Energetics, Hess's law, bond energies"],
-      ["4","Electrochemistry","Electrolysis, electrode potentials, cells"],
-      ["5","Equilibria","Dynamic equilibrium, Kc, Le Chatelier"],
-      ["6","Reaction kinetics","Rate, collision theory, rate equations"],
-      ["7","Periodicity","Periodic trends and properties"],
-      ["8","Group 2","Reactions and compounds of alkaline earth metals"],
-      ["9","Group 17","Halogens and their compounds"],
-      ["10","Nitrogen and sulphur","Chemistry of nitrogen and sulphur"],
-      ["11","An introduction to organic chemistry","Functional groups, nomenclature, isomerism"],
-      ["12","Hydrocarbons","Alkanes, alkenes, aromatic chemistry"],
-      ["13","Halogen derivatives","Halogenoalkanes and related reactions"],
-      ["14","Hydroxy compounds","Alcohols, phenols"],
-      ["15","Carbonyl compounds","Aldehydes and ketones"],
-      ["16","Carboxylic acids and derivatives","Acids, esters, acyl compounds"],
-      ["17","Nitrogen compounds","Amines, amides, nitriles"],
-      ["18","Polymerisation","Addition and condensation polymers"],
-      ["19","Analytical techniques","Mass spectra, IR, NMR, chromatography"],
-      ["20","Further organic chemistry","Extended organic synthesis"],
-      ["21","Further inorganic chemistry","Transition elements and advanced inorganic chemistry"],
-      ["22","Chemistry of life","Biochemical molecules and reactions"],
-      ["23","Practical chemistry","Planning, analysis, evaluation and practical skills"]
+      ["1","Atomic structure","Particles in atoms, isotopes, orbitals and ionisation energy","AS"],
+      ["2","Atoms, molecules and stoichiometry","Relative masses, the mole, formulae and reacting quantities","AS"],
+      ["3","Chemical bonding","Ionic, covalent and metallic bonding; intermolecular forces","AS"],
+      ["4","States of matter","Ideal gases and properties of liquids and solids","AS"],
+      ["5","Chemical energetics","Enthalpy changes and energy cycles","AS"],
+      ["6","Electrochemistry","Redox, electrolysis and related calculations","AS"],
+      ["7","Equilibria","Reversible reactions and equilibrium constants","AS"],
+      ["8","Reaction kinetics","Rates, collision theory and rate equations","AS"],
+      ["9","The Periodic Table: chemical periodicity","Periodic trends and explanations","AS"],
+      ["10","Group 2","Properties and reactions of Group 2 elements and compounds","AS"],
+      ["11","Group 17","Properties and reactions of the halogens and their compounds","AS"],
+      ["12","Nitrogen and sulfur","Chemistry and environmental chemistry of nitrogen and sulfur","AS"],
+      ["13","An introduction to AS Level organic chemistry","Organic structures, formulae, isomerism and reactions","AS"],
+      ["14","Hydrocarbons","Alkanes, alkenes and related reactions","AS"],
+      ["15","Halogen compounds","Halogenoalkanes and their reactions","AS"],
+      ["16","Hydroxy compounds","Alcohols and related chemistry","AS"],
+      ["17","Carbonyl compounds","Aldehydes and ketones","AS"],
+      ["18","Carboxylic acids and derivatives","Carboxylic acids and their derivatives","AS"],
+      ["19","Nitrogen compounds","Organic nitrogen compounds","AS"],
+      ["20","Polymerisation","Addition and condensation polymerisation","AS"],
+      ["21","Organic synthesis","Organic reaction pathways and synthesis","AS"],
+      ["22","Analytical techniques","Identification and analysis of organic compounds","AS"],
+      ["23","Chemical energetics","Further energetics, lattice energy and entropy","A Level"],
+      ["24","Electrochemistry","Further electrochemistry and electrode potentials","A Level"],
+      ["25","Equilibria","Further equilibrium concepts","A Level"],
+      ["26","Reaction kinetics","Further kinetics and rate equations","A Level"],
+      ["27","Group 2","Further Group 2 chemistry","A Level"],
+      ["28","Chemistry of transition elements","Transition-element chemistry","A Level"],
+      ["29","An introduction to A Level organic chemistry","Further organic structure and reactivity","A Level"],
+      ["30","Hydrocarbons","Further hydrocarbon chemistry","A Level"],
+      ["31","Halogen compounds","Further halogen-compound chemistry","A Level"],
+      ["32","Hydroxy compounds","Further hydroxy-compound chemistry","A Level"],
+      ["33","Carboxylic acids and derivatives","Further carboxylic acid and derivative chemistry","A Level"],
+      ["34","Nitrogen compounds","Further nitrogen-compound chemistry","A Level"],
+      ["35","Polymerisation","Further polymer chemistry","A Level"],
+      ["36","Organic synthesis","Further organic synthesis","A Level"],
+      ["37","Analytical techniques","Further analytical techniques","A Level"]
     ]
   },
-
   {
-    id:"math",
-    name:"Mathematics",
-    code:"9709",
-    icon:"∑",
+    id:"math", name:"Mathematics", code:"9709", icon:"∑",
+    syllabusYear:"2028–2030",
+    sourceStatus:"Official topic names and paper groupings mapped. Check your school’s chosen component combination before using this as an exam checklist.",
+    sourceUrl:"https://www.cambridgeinternational.org/Images/744634-2028-2030-syllabus.pdf",
+    topicMode:"component",
     topics:[
-      ["1.1","Quadratics","Roots, discriminant, inequalities"],
-      ["1.2","Functions","Notation, domain, range, inverse and composite functions"],
-      ["1.3","Coordinate geometry","Lines, circles and coordinate methods"],
-      ["1.4","Circular measure","Radians, arc length, sector area"],
-      ["1.5","Trigonometry","Identities, equations, graphs"],
-      ["1.6","Series","Sequences, binomial expansion, arithmetic and geometric series"],
-      ["1.7","Differentiation","Derivatives, applications, tangents and normals"],
-      ["1.8","Integration","Indefinite and definite integration, area"],
-      ["2.1","Algebra","Algebraic manipulation and inequalities"],
-      ["2.2","Logarithmic and exponential functions","Laws, graphs and equations"],
-      ["2.3","Trigonometry","Advanced identities and equations"],
-      ["2.4","Differentiation","Further differentiation and applications"],
-      ["2.5","Integration","Further integration and applications"],
-      ["2.6","Numerical solution of equations","Iteration and numerical methods"],
-      ["3.1","Advanced algebra","Further algebraic techniques"],
-      ["3.2","Advanced logarithmic and exponential functions","Further applications"],
-      ["3.3","Advanced trigonometry","Further identities and equations"],
-      ["3.4","Advanced differentiation","Further derivatives"],
-      ["3.5","Advanced integration","Further techniques"],
-      ["3.6","Numerical methods","Further numerical solutions"],
-      ["3.7","Vectors","Vector geometry and applications"],
-      ["3.8","Differential equations","First-order differential equations"],
-      ["3.9","Complex numbers","Argand diagrams and complex algebra"],
-      ["4.1","Forces and equilibrium","Resultants and equilibrium"],
-      ["4.2","Kinematics","Motion in a straight line"],
-      ["4.3","Momentum","Collisions and conservation"],
-      ["4.4","Newton's laws","Dynamics"],
-      ["4.5","Energy, work and power","Mechanical energy"],
-      ["5.1","Representation of data","Data, diagrams and measures"],
-      ["5.2","Permutations and combinations","Counting methods"],
-      ["5.3","Probability","Probability laws"],
-      ["5.4","Discrete random variables","Expectation and variance"],
-      ["5.5","Normal distribution","Standardisation and probabilities"],
-      ["6.1","Poisson distribution","Poisson model"],
-      ["6.2","Linear combinations of random variables","Means and variances"],
-      ["6.3","Continuous random variables","Probability density"],
-      ["6.4","Sampling and estimation","Samples, estimates and confidence"],
-      ["6.5","Hypothesis tests","Statistical testing"]
+      ["1.1","Quadratics","Roots, discriminant and inequalities","Pure Mathematics 1"],
+      ["1.2","Functions","Notation, domain, range, inverse and composite functions","Pure Mathematics 1"],
+      ["1.3","Coordinate geometry","Lines and coordinate methods","Pure Mathematics 1"],
+      ["1.4","Circular measure","Radians, arc length and sector area","Pure Mathematics 1"],
+      ["1.5","Trigonometry","Identities, equations and graphs","Pure Mathematics 1"],
+      ["1.6","Series","Sequences, binomial expansion and arithmetic/geometric series","Pure Mathematics 1"],
+      ["1.7","Differentiation","Derivatives and applications","Pure Mathematics 1"],
+      ["1.8","Integration","Indefinite and definite integration, area","Pure Mathematics 1"],
+      ["2.1","Algebra","Algebraic manipulation and inequalities","Pure Mathematics 2"],
+      ["2.2","Logarithmic and exponential functions","Laws, graphs and equations","Pure Mathematics 2"],
+      ["2.3","Trigonometry","Further identities and equations","Pure Mathematics 2"],
+      ["2.4","Differentiation","Further differentiation and applications","Pure Mathematics 2"],
+      ["2.5","Integration","Further integration and applications","Pure Mathematics 2"],
+      ["2.6","Numerical solution of equations","Numerical methods","Pure Mathematics 2"],
+      ["3.1","Algebra","Further algebraic techniques","Pure Mathematics 3"],
+      ["3.2","Logarithmic and exponential functions","Further applications","Pure Mathematics 3"],
+      ["3.3","Trigonometry","Further trigonometric methods","Pure Mathematics 3"],
+      ["3.4","Differentiation","Further derivatives","Pure Mathematics 3"],
+      ["3.5","Integration","Further integration techniques","Pure Mathematics 3"],
+      ["3.6","Numerical solution of equations","Further numerical methods","Pure Mathematics 3"],
+      ["3.7","Vectors","Vector geometry and applications","Pure Mathematics 3"],
+      ["3.8","Differential equations","First-order differential equations","Pure Mathematics 3"],
+      ["3.9","Complex numbers","Argand diagrams and complex algebra","Pure Mathematics 3"],
+      ["4.1","Forces and equilibrium","Resultants and equilibrium","Mechanics"],
+      ["4.2","Kinematics of motion in a straight line","Motion in a straight line","Mechanics"],
+      ["4.3","Momentum","Collisions and conservation","Mechanics"],
+      ["4.4","Newton’s laws of motion","Dynamics","Mechanics"],
+      ["4.5","Energy, work and power","Mechanical energy","Mechanics"],
+      ["5.1","Representation of data","Data, diagrams and measures","Probability & Statistics 1"],
+      ["5.2","Permutations and combinations","Counting methods","Probability & Statistics 1"],
+      ["5.3","Probability","Probability laws","Probability & Statistics 1"],
+      ["5.4","Discrete random variables","Expectation and variance","Probability & Statistics 1"],
+      ["5.5","The normal distribution","Standardisation and probabilities","Probability & Statistics 1"],
+      ["6.1","The Poisson distribution","Poisson model","Probability & Statistics 2"],
+      ["6.2","Linear combinations of random variables","Means and variances","Probability & Statistics 2"],
+      ["6.3","Continuous random variables","Probability density","Probability & Statistics 2"],
+      ["6.4","Sampling and estimation","Samples and estimates","Probability & Statistics 2"],
+      ["6.5","Hypothesis tests","Statistical testing","Probability & Statistics 2"]
     ]
   },
-
   {
-    id:"french",
-    name:"French",
-    code:"8028",
-    icon:"🇫🇷",
+    id:"french", name:"French", code:"8263", icon:"🇫🇷",
+    syllabusYear:"2028–2030 (Mauritius)",
+    sourceStatus:"Correct Mauritius syllabus code. Topic-level details are deliberately marked provisional until the 8263 2028–2030 PDF is fully checked; these are study-skill trackers, not a claimed complete topic list.",
+    sourceUrl:"https://learning.cambridgeinternational.org/classroom/course/section.php?id=42523",
+    topicMode:"component",
     topics:[
-      ["1","Identity and relationships","Personal identity, family, relationships and lifestyle"],
-      ["2","Home and local area","Home, neighbourhood, community and services"],
-      ["3","Education and future plans","School, learning, work and aspirations"],
-      ["4","Food, health and fitness","Diet, wellbeing, sport and healthy living"],
-      ["5","Leisure, culture and entertainment","Free time, media, arts, culture"],
-      ["6","Travel and the wider world","Travel, environment, society and global issues"],
-      ["7","Grammar","Tenses, pronouns, agreements, structures"],
-      ["8","Vocabulary development","High-frequency and thematic vocabulary"],
-      ["9","Listening","Comprehension and inference"],
-      ["10","Reading","Comprehension, analysis and interpretation"],
-      ["11","Writing","Accuracy, communication and extended responses"],
-      ["12","Speaking","Interaction, presentation and discussion"]
+      ["skill-vocab","Vocabulary and grammar","Track vocabulary, grammar structures and accurate language use","Language skills"],
+      ["skill-read","Reading practice","Track comprehension practice and correction of errors","Language skills"],
+      ["skill-write","Writing practice","Track writing practice, organisation and language accuracy","Language skills"],
+      ["P1","Paper 1 practice","Record preparation and practice for the first syllabus component","Paper practice"],
+      ["P2","Paper 2 practice","Record preparation and practice for the second syllabus component","Paper practice"]
     ]
   },
-
   {
-    id:"gp",
-    name:"English General Paper",
-    code:"8021",
-    icon:"✎",
+    id:"gp", name:"English General Paper", code:"8019", icon:"✎",
+    syllabusYear:"2027–2028 plan — 8019 confirmed by user",
+    sourceStatus:"Mauritius syllabus code confirmed by the user. Topic and assessment details are broad preparation trackers until mapped directly against the exact 8019 syllabus document; no 8021 paper structure is assumed.",
+    sourceUrl:"https://learning.cambridgeinternational.org/classroom/course/view.php?name=mauritius&section=1",
+    topicMode:"component",
     topics:[
-      ["1","Economic, historical, moral, political and social","Society, government, history, economics and ethics"],
-      ["2","Science and technology","Scientific developments and technological change"],
-      ["3","Environment","Climate, resources, sustainability and human impact"],
-      ["4","Culture","Arts, literature, music, heritage and identity"],
-      ["5","Media","News, advertising, digital media and communication"],
-      ["6","Education","Schools, universities, access and educational policy"],
-      ["7","Health","Healthcare, public health, lifestyle and medicine"],
-      ["8","International relations","Globalisation, conflict, cooperation and organisations"],
-      ["9","Law and crime","Justice, law, rights and social order"],
-      ["10","Sport","Sport, society, economics and culture"],
-      ["11","Comprehension","Understanding, analysis and inference"],
-      ["12","Argument","Reasoning, evidence, counterargument and evaluation"],
-      ["13","Essay writing","Structure, relevance, examples and style"],
-      ["14","Persuasive writing","Audience, purpose, tone and persuasion"],
-      ["15","Research and topical awareness","Independent research and contemporary knowledge"]
+      ["gp-knowledge","Current affairs and topic knowledge","Build accurate, relevant examples across a range of contemporary issues","Preparation skill"],
+      ["gp-argument","Argument and evaluation","Practise balanced reasoning, evaluation of viewpoints and supported conclusions","Preparation skill"],
+      ["gp-writing","Academic writing and structure","Practise clear organisation, precise expression and coherent paragraphs","Preparation skill"],
+      ["gp-reading","Reading and source analysis","Practise identifying claims, evidence, assumptions and implications","Preparation skill"],
+      ["gp-timed","Timed paper practice","Log attempts, marks, feedback and recurring mistakes against the official paper requirements","Paper practice"]
     ]
   }
 ];
@@ -1836,6 +2031,9 @@ function freshData(){
     studies:[],
     papers:[],
     mistakes:[],
+    flightOpportunities:[],
+    flightAchievements:[],
+    revisionPlan:null,
     settings:{}
   };
 }
@@ -1912,10 +2110,12 @@ async function persistAstraeaToCloud(showToast=true){
     localStorage.setItem(KEY,JSON.stringify(data));
     setCloudStatus("Cloud synced successfully ✦");
     if(showToast)toast("ASTRAEA synced to cloud ✦");
+    return true;
   }catch(error){
     console.error("ASTRAEA cloud save failed:",error);
     setCloudStatus("Cloud sync failed. Your local data is still saved. " + (error.message || ""),true);
     if(showToast)toast("Cloud sync failed; local backup remains.");
+    return false;
   }
 }
 
@@ -2009,8 +2209,20 @@ async function signUpToAstraea(){
 async function signOutOfAstraea(){
   if(!supabaseClient)return;
   clearTimeout(cloudSaveTimer);
-  // Best effort: finish pending local changes before signing out.
-  if(cloudReady && currentCloudUser)await persistAstraeaToCloud(false);
+
+  // Never clear this device's workspace unless its cloud copy is confirmed saved.
+  if(currentCloudUser){
+    if(!cloudReady){
+      setCloudStatus("Can't safely sign out while your cloud workspace is still loading. Your local data has been preserved; reconnect and try again.",true);
+      return;
+    }
+    const saved=await persistAstraeaToCloud(false);
+    if(!saved){
+      setCloudStatus("Sign-out paused because the latest changes could not be confirmed in the cloud. Your local data is preserved; retry after fixing the connection.",true);
+      return;
+    }
+  }
+
   const {error}=await supabaseClient.auth.signOut();
   if(error){setCloudStatus(error.message,true);return;}
   currentCloudUser=null;
@@ -2116,12 +2328,16 @@ function dailyQuote(){
 
 const titles={
   dashboard:["Command Centre","Your A-Level academic system"],
+  journey:["Academic Journey","Your progress across the A-Level pathway"],
   syllabus:["Syllabus Observatory","Your complete A-Level curriculum"],
   exams:["Exam Observatory","Every assessment, scheduled"],
   homework:["Homework Hub","School + tuition"],
   tasks:["Task Dashboard","Your missions, deadlines and progress"],
   study:["Study Sessions","Evidence of what you actually did"],
-  papers:["Past Paper Intelligence","Turn papers into data"],
+  papers:["Past Paper Laboratory","Turn papers into data"],
+  weekly:["Weekly Command Briefing","Review your recorded progress and plan next week"],
+  actionengine:["Adaptive Action Engine","Turn recorded performance into suggested next steps"],
+  flightdeck:["Future Flight Deck","Universities, scholarships and achievements"],
   mistakes:["Mistake Vault","Your errors become evidence"],
   aether:["AETHER","Your academic intelligence layer"],
   analytics:["Academic Analytics","Your long-term trajectory"],
@@ -2181,11 +2397,33 @@ function populateSelects(){
   ids.forEach(id=>{
     const el=document.getElementById(id);
     if(!el)return;
-
+    const previous=el.value;
     el.innerHTML=SUBJECTS.map(s=>
-      `<option value="${s.id}">${s.name} (${s.code})</option>`
+      `<option value="${s.id}">${esc(s.name)} (${esc(s.code)})</option>`
     ).join("");
+    if(previous && SUBJECTS.some(s=>s.id===previous))el.value=previous;
   });
+
+  [["studySubject","studyTopic"],["mistakeSubject","mistakeTopic"]].forEach(([subjectId,topicId])=>{
+    const subjectEl=document.getElementById(subjectId);
+    if(!subjectEl)return;
+    subjectEl.removeEventListener("change",subjectEl._astraeaTopicChange || (()=>{}));
+    const handler=()=>updateTopicOptions(topicId,subjectEl.value);
+    subjectEl._astraeaTopicChange=handler;
+    subjectEl.addEventListener("change",handler);
+    updateTopicOptions(topicId,subjectEl.value);
+  });
+}
+
+function updateTopicOptions(selectId,subjectId){
+  const el=document.getElementById(selectId);
+  const s=subject(subjectId);
+  if(!el || !s)return;
+  const previous=el.value;
+  el.innerHTML='<option value="">Not linked to a topic</option>'+s.topics.map(t=>
+    `<option value="${esc(t[0])}">${esc(t[1])}</option>`
+  ).join("");
+  if(previous && s.topics.some(t=>t[0]===previous))el.value=previous;
 }
 
 
@@ -2288,16 +2526,31 @@ function allTopicScores(){
       ).length;
 
       const risk=retentionRisk(s.id,t[0]).score;
-
+      const topicStudies=data.studies
+        .filter(x=>x.subject===s.id && x.topic===t[0])
+        .sort((a,b)=>b.date.localeCompare(a.date));
+      const lastReviewed=topicStudies[0]?.date || "";
+      const daysSinceReview=lastReviewed?Math.max(0,daysBetween(lastReviewed)*-1):null;
+      const subjectPapers=data.papers.filter(p=>
+        p.subject===s.id && Number(p.total)>0 &&
+        Number(p.score)>=0 && Number(p.score)<=Number(p.total)
+      );
+      const paperTotal=subjectPapers.reduce((sum,p)=>sum+Number(p.total),0);
+      const paperScore=subjectPapers.reduce((sum,p)=>sum+Number(p.score),0);
+      const paperAverage=paperTotal?Math.round(paperScore/paperTotal*100):null;
       const examPressure=nearest && nearest.subject===s.id
         ? Math.max(0,50-examDays*2)
         : 0;
-
-      const priority=
-        (100-m)*.48+
-        risk*.22+
-        mistakes*8+
-        examPressure;
+      const paperPressure=paperAverage===null?0:Math.max(0,(70-paperAverage)*.35);
+      const studyEvidence=topicStudies.length?Math.min(8,topicStudies.length*2):0;
+      const priority=Math.max(0,
+        (100-m)*.42+
+        risk*.20+
+        mistakes*10+
+        examPressure+
+        paperPressure-
+        studyEvidence
+      );
 
       scores.push({
         subject:s,
@@ -2305,7 +2558,11 @@ function allTopicScores(){
         mastery:m,
         risk,
         mistakes,
-        priority
+        priority,
+        paperAverage,
+        lastReviewed,
+        daysSinceReview,
+        studyCount:topicStudies.length
       });
     });
   });
@@ -2528,6 +2785,7 @@ function renderRetentionDashboard(){
 /* ---------- SYLLABUS ---------- */
 
 let selectedSubject="physics";
+let selectedSyllabusFilter="all";
 
 function renderSubjectFilters(){
 
@@ -2550,55 +2808,59 @@ function renderSyllabus(){
   if(!s)return;
 
   const mastery=avg(s.topics.map(t=>topicMastery(s.id,t[0])));
+  const groups=[...new Set(s.topics.map(t=>t[3] || "Topics"))];
+  const filters=s.topicMode==="level" ? ["all","AS","A Level"] : ["all",...groups];
+  if(!filters.includes(selectedSyllabusFilter))selectedSyllabusFilter="all";
+  const visibleTopics=s.topics.filter(t=>selectedSyllabusFilter==="all" || (s.topicMode==="level" ? t[3]===selectedSyllabusFilter : (t[3]||"Topics")===selectedSyllabusFilter));
+  const filterLabel=s.topicMode==="level" ? "Study level" : "Syllabus section";
+  const sourceStatus=s.sourceStatus || "Topic list is a working outline and should be checked against the official syllabus.";
 
   document.getElementById("syllabusPanel").innerHTML=`
     <div class="section-head">
       <div>
-        <div class="subject-code">${s.code}</div>
+        <div class="subject-code">${esc(s.code)} · ${esc(s.syllabusYear || "Syllabus year to confirm")}</div>
         <h3 style="margin:5px 0">${s.icon} ${esc(s.name)}</h3>
       </div>
-
       <div style="text-align:right">
         <div class="mastery-big">${mastery}%</div>
-        <div class="stat-label">subject mastery</div>
+        <div class="stat-label">tracked mastery</div>
       </div>
     </div>
-
-    <div class="progress" style="margin-bottom:22px">
-      <div style="width:${mastery}%"></div>
+    <div class="progress" style="margin-bottom:16px"><div style="width:${mastery}%"></div></div>
+    <div class="mission" style="margin-bottom:16px;align-items:flex-start">
+      <div style="min-width:0">
+        <h4 style="margin:0 0 5px">Syllabus source status</h4>
+        <p style="margin:0;font-size:12px;line-height:1.55">${esc(sourceStatus)}</p>
+        ${s.sourceUrl?`<p style="margin:7px 0 0;font-size:12px"><a href="${esc(s.sourceUrl)}" target="_blank" rel="noopener noreferrer" style="color:var(--ice)">Open syllabus source ↗</a></p>`:""}
+      </div>
     </div>
-
-    ${s.topics.map((t,i)=>{
-
+    <div style="margin:0 0 8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">${filterLabel}</div>
+    <div class="filter-row" style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px">
+      ${filters.map(f=>`<button class="filter ${selectedSyllabusFilter===f?"active":""}" onclick="selectedSyllabusFilter='${f.replaceAll("'","\\'")}';renderSyllabus()">${f==="all"?"All topics":esc(f)}</button>`).join("")}
+    </div>
+    ${visibleTopics.map(t=>{
       const m=topicMastery(s.id,t[0]);
-
       return `
         <div class="topic">
           <div class="topic-top">
-            <div>
+            <div style="min-width:0">
               <div class="topic-name">${esc(t[0])} · ${esc(t[1])}</div>
               <div class="topic-sub">${esc(t[2])}</div>
+              ${t[3]?`<div class="topic-sub" style="margin-top:4px;color:var(--ice)">${esc(t[3])}</div>`:""}
             </div>
-
-            <div style="display:flex;align-items:center;gap:10px">
+            <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
               <span class="badge ${m>=80?"good":m>=60?"warn":"bad"}">${m}%</span>
-              <input
-                class="slider"
-                type="range"
-                min="0"
-                max="100"
-                value="${m}"
-                onchange="updateMastery('${s.id}','${t[0]}',this.value)">
+              <input class="slider" type="range" min="0" max="100" value="${m}" onchange="updateMastery('${s.id}','${t[0]}',this.value)" aria-label="${esc(s.name)} ${esc(t[1])} mastery">
             </div>
           </div>
-        </div>
-      `;
+        </div>`;
     }).join("")}
   `;
 }
 
 function updateMastery(sid,tid,value){
 
+  if(!data.mastery[sid])data.mastery[sid]={};
   data.mastery[sid][tid]=Number(value);
 
   save();
@@ -2641,6 +2903,8 @@ function toggleTask(id){
   if(!t)return;
 
   t.done=!t.done;
+  if(t.done)t.completedAt=todayISO();
+  else delete t.completedAt;
   save();
   renderAll();
 }
@@ -2759,8 +3023,93 @@ function deleteExam(id){
   renderAll();
 }
 
+function openExamPaper(subjectId){
+  openModal("paperModal");
+  const select=document.getElementById("paperSubject");
+  if(select && subjectId)select.value=subjectId;
+  const component=document.getElementById("paperComponent");
+  if(component && !component.value){
+    const e=data.exams.filter(x=>!x.done && daysBetween(x.date)>=0)
+      .sort((a,b)=>a.date.localeCompare(b.date))[0];
+    if(e && e.subject===subjectId && e.paper)component.value=e.paper;
+  }
+}
+
+function renderExamBriefing(){
+  const el=document.getElementById("examBriefingContent");
+  if(!el)return;
+
+  const next=data.exams
+    .filter(e=>!e.done && daysBetween(e.date)>=0)
+    .sort((a,b)=>a.date.localeCompare(b.date))[0];
+
+  if(!next){
+    el.innerHTML=`<p style="color:var(--muted);margin:0">No upcoming open exam. Add an assessment to unlock a subject-specific briefing.</p>`;
+    return;
+  }
+
+  const d=daysBetween(next.date);
+  const subjectPapers=data.papers
+    .filter(p=>p.subject===next.subject && Number(p.total)>0 && Number(p.score)>=0)
+    .sort((a,b)=>(b.date||"").localeCompare(a.date||""))
+    .slice(0,5);
+  const totalMarks=subjectPapers.reduce((sum,p)=>sum+Number(p.total),0);
+  const earnedMarks=subjectPapers.reduce((sum,p)=>sum+Number(p.score),0);
+  const paperAverage=totalMarks>0?Math.round(earnedMarks/totalMarks*100):null;
+  const s=subject(next.subject);
+  const mastery=s && s.topics.length
+    ?Math.round(avg(s.topics.map(t=>topicMastery(s.id,t[0])))):null;
+  const openMistakes=data.mistakes.filter(m=>m.subject===next.subject && !m.fixed).length;
+  const weakest=s?s.topics.map(t=>({topic:t,mastery:topicMastery(s.id,t[0])}))
+    .sort((a,b)=>a.mastery-b.mastery)[0]:null;
+
+  let action="Complete a timed practice paper, then record the score and review your errors.";
+  if(openMistakes>0) action=`Correct and retest ${openMistakes} unresolved mistake${openMistakes===1?"":"s"} before doing more new questions.`;
+  else if(paperAverage===null) action="Complete one timed paper or component and log the result to establish a performance baseline.";
+  else if(weakest && weakest.mastery<80) action=`Revise ${weakest.topic[1]} (${weakest.mastery}% recorded mastery), then answer exam-style questions on it.`;
+  else action="Complete a timed paper, mark it strictly, and log any new mistakes.";
+
+  el.innerHTML=`
+    <div class="section-head" style="align-items:flex-start;gap:14px;flex-wrap:wrap">
+      <div style="min-width:200px;flex:1">
+        <div class="subject-code">${esc(s?s.code:"Assessment")}${next.paper?" · "+esc(next.paper):""}</div>
+        <h3 style="margin:5px 0 4px">${esc(next.name)}</h3>
+        <p style="margin:0;color:var(--muted)">${esc(subjectName(next.subject))} · ${formatDate(next.date)}${next.time?" · "+esc(next.time):""}</p>
+      </div>
+      <span class="badge ${d===0?"bad":d<=7?"warn":"info"}">${d===0?"TODAY":d===1?"1 DAY LEFT":d+" DAYS LEFT"}</span>
+    </div>
+    <div class="grid three-grid" style="margin-top:16px">
+      <div class="card" style="padding:13px;background:var(--panel)">
+        <div class="stat-label">Recorded syllabus mastery</div>
+        <div class="stat-number">${mastery===null?"—":mastery+"%"}</div>
+      </div>
+      <div class="card" style="padding:13px;background:var(--panel)">
+        <div class="stat-label">Recent paper average</div>
+        <div class="stat-number">${paperAverage===null?"—":paperAverage+"%"}</div>
+        <div class="stat-label">${subjectPapers.length?"Weighted across "+subjectPapers.length+" recent paper(s)":"No paper scores logged"}</div>
+      </div>
+      <div class="card" style="padding:13px;background:var(--panel)">
+        <div class="stat-label">Unresolved mistakes</div>
+        <div class="stat-number">${openMistakes}</div>
+      </div>
+    </div>
+    <div class="mission" style="margin-top:14px">
+      <div style="min-width:0;flex:1">
+        <span class="badge lav">NEXT BEST ACTION</span>
+        <p style="margin:8px 0 0">${esc(action)}</p>
+      </div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap">
+        <button class="btn primary" onclick="openExamPaper('${String(next.subject).replace(/'/g,"\'")}')">Log practice paper</button>
+        <button class="btn" onclick="showView('mistakes')">Mistake Vault</button>
+      </div>
+    </div>
+    <p class="muted" style="font-size:11px;margin:10px 0 0">These are tracking indicators, not a predicted grade. Mastery reflects the topics currently listed in ASTRAEA; paper average uses up to five most recently logged papers for this subject.</p>
+  `;
+}
+
 function renderExams(){
 
+  renderExamBriefing();
   const el=document.getElementById("examList");
 
   const exams=[...data.exams]
@@ -2980,7 +3329,7 @@ function createStudy(){
     minutes,
     mode:document.getElementById("studyMode").value,
     notes:document.getElementById("studyNotes").value,
-    topic:""
+    topic:document.getElementById("studyTopic").value || ""
   });
 
   save();
@@ -3022,7 +3371,7 @@ function renderStudy(){
     <div class="mission">
       <div>
         <h4>${esc(subjectName(x.subject))} · ${esc(x.mode)}</h4>
-        <p>${formatDate(x.date)} · ${x.minutes} minutes</p>
+        <p>${formatDate(x.date)} · ${x.minutes} minutes${x.topic?` · ${esc(subject(x.subject)?.topics.find(t=>t[0]===x.topic)?.[1]||"Linked topic")}`:""}</p>
         ${x.notes?`<p style="margin-top:5px">${esc(x.notes)}</p>`:""}
       </div>
       <button class="btn" onclick="deleteStudy('${x.id}')">×</button>
@@ -3038,8 +3387,8 @@ function createPaper(){
   const score=Number(document.getElementById("paperScore").value);
   const total=Number(document.getElementById("paperTotal").value);
 
-  if(!total || score<0){
-    toast("Add a valid score and total.");
+  if(!total || score<0 || score>total){
+    toast("Add a valid score between zero and the total marks.");
     return;
   }
 
@@ -3052,7 +3401,9 @@ function createPaper(){
     session:document.getElementById("paperSession").value,
     score,
     total,
-    reflection:document.getElementById("paperReflection").value
+    focusTopics:document.getElementById("paperFocusTopics").value.trim(),
+    reflection:document.getElementById("paperReflection").value,
+    attempt:1
   });
 
   save();
@@ -3070,55 +3421,184 @@ function deletePaper(id){
 }
 
 function renderPapers(){
-
   const el=document.getElementById("paperList");
+  const all=[...(data.papers||[])].filter(x=>Number(x.total)>0 && Number(x.score)>=0 && Number(x.score)<=Number(x.total));
+  const filter=document.getElementById("paperFilterSubject");
+  if(filter){
+    const current=filter.value||"all";
+    const opts=['<option value="all">All subjects</option>',...SUBJECTS.map(s=>`<option value="${esc(s.id)}">${esc(s.name)}</option>`) ].join("");
+    if(filter.dataset.ready!=="1"){filter.innerHTML=opts;filter.dataset.ready="1";}
+    filter.value=SUBJECTS.some(s=>s.id===current)||current==="all"?current:"all";
+  }
+  const items=all.filter(x=>!filter||filter.value==="all"||x.subject===filter.value).sort((a,b)=>String(b.date||"").localeCompare(String(a.date||"")));
+  const avg=all.length?Math.round(all.reduce((sum,x)=>sum+Number(x.score)/Number(x.total)*100,0)/all.length):null;
+  const best=all.length?Math.max(...all.map(x=>Number(x.score)/Number(x.total)*100)):null;
+  document.getElementById("labPaperCount").textContent=all.length;
+  document.getElementById("labAverage").textContent=avg===null?"—":avg+"%";
+  document.getElementById("labBest").textContent=best===null?"—":Math.round(best)+"%";
+  const insight=document.getElementById("paperSubjectInsights");
+  const bySubject=SUBJECTS.map(sub=>({sub,rows:all.filter(x=>x.subject===sub.id)})).filter(x=>x.rows.length).map(x=>({...x,avg:Math.round(x.rows.reduce((sum,p)=>sum+Number(p.score)/Number(p.total)*100,0)/x.rows.length)})).sort((a,b)=>a.avg-b.avg);
+  insight.innerHTML=bySubject.length?bySubject.map(x=>`<div class="progress-row"><div class="progress-meta"><span>${esc(x.sub.name)} · ${x.rows.length} paper${x.rows.length===1?'':'s'}</span><strong>${x.avg}%</strong></div><div class="progress"><div style="width:${x.avg}%"></div></div></div>`).join(""):'<p class="muted">Log papers to see subject averages.</p>';
+  const lab=document.getElementById("paperLabInsights");
+  const withReflection=all.filter(x=>(x.reflection||"").trim()||(x.focusTopics||"").trim()).length;
+  const focusCounts={};
+  all.forEach(x=>{if((x.focusTopics||"").trim())focusCounts[x.subject]=(focusCounts[x.subject]||0)+1;});
+  const weakest=bySubject[0];
+  lab.innerHTML=`<p>${withReflection} of ${all.length} paper${all.length===1?'':'s'} have a reflection or revisit note.</p>${weakest?`<p><strong>Lowest subject average:</strong> ${esc(weakest.sub.name)} (${weakest.avg}%). Use its reflections and linked mistakes to choose the next practice target.</p>`:''}<p class="muted">These are descriptive averages of your logged attempts, not predicted Cambridge grades or grade thresholds.</p>`;
+  if(!items.length){el.innerHTML='<p class="muted">No papers match this filter yet. Log your first attempt to begin the laboratory record.</p>';return;}
+  el.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Subject</th><th>Component</th><th>Paper</th><th>Score</th><th>%</th><th>Reflection / revisit topics</th><th></th></tr></thead><tbody>${items.map(x=>{const pct=Math.round(Number(x.score)/Number(x.total)*100);return `<tr><td>${esc(subjectName(x.subject))}</td><td>${esc(x.component||"—")}</td><td>${esc(String(x.year||"—"))} · ${esc(x.session||"—")}</td><td>${x.score}/${x.total}</td><td><span class="badge ${pct>=80?'good':pct>=60?'warn':'bad'}">${pct}%</span></td><td>${esc([x.focusTopics,x.reflection].filter(Boolean).join(' · ')||'—')}</td><td><button class="btn" onclick="deletePaper('${x.id}')" aria-label="Delete paper record">×</button></td></tr>`;}).join("")}</tbody></table></div>`;
+}
 
-  if(!data.papers.length){
-    el.innerHTML="<p style='color:var(--muted)'>No papers logged yet.</p>";
-    return;
+function weekBoundsISO(){
+  const now=new Date();
+  const start=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  const day=(start.getDay()+6)%7;
+  start.setDate(start.getDate()-day);
+  const end=new Date(start);end.setDate(start.getDate()+6);
+  const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  return {start:iso(start),end:iso(end)};
+}
+function renderWeeklyBriefing(){
+  const range=weekBoundsISO();
+  const inRange=x=>x&&x>=range.start&&x<=range.end;
+  const studies=(data.studies||[]).filter(x=>inRange(x.date));
+  const papers=(data.papers||[]).filter(x=>inRange(x.date)&&Number(x.total)>0&&Number(x.score)>=0&&Number(x.score)<=Number(x.total));
+  const mistakes=(data.mistakes||[]).filter(x=>inRange(x.date));
+  const completed=(data.tasks||[]).filter(x=>x.done&&inRange(x.completedAt));
+  const minutes=studies.reduce((sum,x)=>sum+Math.max(0,Number(x.minutes)||0),0);
+  const openMistakes=(data.mistakes||[]).filter(x=>!x.fixed);
+  const unresolvedBySubject=SUBJECTS.map(sub=>({sub,count:openMistakes.filter(x=>x.subject===sub.id).length})).filter(x=>x.count).sort((a,b)=>b.count-a.count);
+  const validPct=p=>Math.round(Number(p.score)/Number(p.total)*100);
+  document.getElementById('weeklyRange').textContent=`${formatDate(range.start)} – ${formatDate(range.end)}`;
+  document.getElementById('weeklyStudyTime').textContent=minutes>=60?`${Math.floor(minutes/60)}h ${minutes%60}m`:`${minutes}m`;
+  document.getElementById('weeklyStudyCount').textContent=studies.length;
+  document.getElementById('weeklyPaperCount').textContent=papers.length;
+  const wins=[];
+  if(studies.length)wins.push(`${studies.length} study session${studies.length===1?'':'s'} logged (${minutes} minutes total).`);
+  if(papers.length){const average=Math.round(papers.reduce((sum,p)=>sum+validPct(p),0)/papers.length);wins.push(`${papers.length} valid past paper${papers.length===1?'':'s'} logged, averaging ${average}% for the week.`);}
+  if(completed.length)wins.push(`${completed.length} mission${completed.length===1?'':'s'} marked complete this week.`);
+  if(mistakes.length)wins.push(`${mistakes.length} mistake${mistakes.length===1?'':'s'} captured for correction.`);
+  document.getElementById('weeklyWins').innerHTML=wins.length?`<ul>${wins.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p class="muted">No activity is recorded for this week yet. Log a study session, paper, mistake or completed mission and your briefing will build from it.</p>';
+  const focus=[];
+  if(!papers.length)focus.push('Log a past-paper attempt so you can review performance with evidence.');
+  else {
+    const bySubject=SUBJECTS.map(sub=>({sub,rows:papers.filter(p=>p.subject===sub.id)})).filter(x=>x.rows.length).map(x=>({...x,average:Math.round(x.rows.reduce((sum,p)=>sum+validPct(p),0)/x.rows.length)})).sort((a,b)=>a.average-b.average);
+    if(bySubject.length)focus.push(`Review ${bySubject[0].sub.name}: it has the lowest average among subjects with papers logged this week (${bySubject[0].average}%).`);
+  }
+  if(unresolvedBySubject.length)focus.push(`Revisit open mistakes in ${unresolvedBySubject.slice(0,2).map(x=>`${x.sub.name} (${x.count})`).join(' and ')}.`);
+  else focus.push('Keep recording and correcting mistakes so recurring gaps are visible.');
+  if(minutes===0)focus.push('Schedule one realistic study block and log it afterwards.');
+  document.getElementById('weeklyFocus').innerHTML=`<ul>${focus.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
+  const bySubject=SUBJECTS.map(sub=>({sub,rows:papers.filter(p=>p.subject===sub.id)})).filter(x=>x.rows.length).map(x=>({...x,average:Math.round(x.rows.reduce((sum,p)=>sum+validPct(p),0)/x.rows.length)})).sort((a,b)=>a.average-b.average);
+  document.getElementById('weeklySubjects').innerHTML=bySubject.length?bySubject.map(x=>`<div class="progress-row"><div class="progress-meta"><span>${esc(x.sub.name)} · ${x.rows.length} paper${x.rows.length===1?'':'s'}</span><strong>${x.average}%</strong></div><div class="progress"><div style="width:${x.average}%"></div></div></div>`).join(''):'<p class="muted">No papers logged this week yet.</p>';
+  const checklist=[];
+  if(openMistakes.length)checklist.push(`Correct or retry ${Math.min(openMistakes.length,3)} open mistake${Math.min(openMistakes.length,3)===1?'':'s'} from the Mistake Vault.`);
+  if(!papers.length)checklist.push('Complete and log one timed past-paper attempt.');
+  else checklist.push('Review one past-paper reflection and retry the weakest question type.');
+  if(minutes<180)checklist.push('Set a realistic study target for the week and log completed sessions.');
+  else checklist.push('Keep study sessions balanced across subjects and revisit topics with weak recall.');
+  checklist.push('Review this briefing at the end of the week and adjust the next plan.');
+  document.getElementById('weeklyChecklist').innerHTML=`<ul>${checklist.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><p class="muted" style="margin-top:10px">This is a suggestion list only. Nothing is added to your tasks unless you create it yourself.</p>`;
+}
+
+/* ---------- ADAPTIVE ACTION ENGINE ---------- */
+function getAdaptiveSuggestions(){
+  const suggestions=[];
+  const openMistakes=(data.mistakes||[]).filter(m=>!m.fixed).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
+  const validPapers=(data.papers||[]).filter(p=>Number(p.total)>0&&Number(p.score)>=0&&Number(p.score)<=Number(p.total));
+  const validPct=p=>Math.round(Number(p.score)/Number(p.total)*100);
+  const latestPaper=[...validPapers].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')))[0];
+  const latestStudy=[...(data.studies||[])].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')))[0];
+  const add=(item)=>{if(item&&item.title&&!suggestions.some(x=>x.title===item.title))suggestions.push(item);};
+
+  openMistakes.slice(0,3).forEach(m=>{
+    const subject=subjectName(m.subject);
+    add({title:`Correct and retry: ${m.title}`,subject:m.subject,type:'Mistake Correction',minutes:25,reason:`An unresolved ${m.category||'recorded'} mistake is still open${subject?' in '+subject:''}. Revisit the correction, then answer a similar question without notes.`});
+  });
+
+  if(latestPaper){
+    const pct=validPct(latestPaper), subject=subjectName(latestPaper.subject);
+    const detail=(latestPaper.focusTopics||'').trim();
+    if(pct<70){
+      add({title:`Review ${subject} paper result (${pct}%)`,subject:latestPaper.subject,type:'Past Paper',minutes:35,reason:`Your latest recorded paper was ${pct}%. Review the mark scheme and identify the exact lost-mark causes before attempting more questions.`});
+      if(detail)add({title:`Practise recorded focus: ${detail}`,subject:latestPaper.subject,type:'Exam Questions',minutes:30,reason:'These are the topic or question details you recorded for this paper. Target them with exam-style questions.'});
+    }else if(pct<85){
+      add({title:`Strengthen ${subject} paper technique`,subject:latestPaper.subject,type:'Exam Questions',minutes:25,reason:`Your latest recorded paper was ${pct}%. Review your reflection and practise the question types where marks were lost.`});
+      if(detail)add({title:`Retrieve and practise: ${detail}`,subject:latestPaper.subject,type:'Active Recall',minutes:20,reason:'Use the topic details you logged to test recall first, then check your answers.'});
+    }else{
+      add({title:`Spaced retrieval for ${subject}`,subject:latestPaper.subject,type:'Active Recall',minutes:15,reason:`Your latest recorded paper was ${pct}%. Use a short closed-book retrieval session to maintain what is working, then try a challenging question.`});
+    }
   }
 
-  const items=[...data.papers].sort((a,b)=>b.date.localeCompare(a.date));
+  if(latestStudy){
+    const linkedSubject=subject(latestStudy.subject);
+    const topicName=(latestStudy.topic&&linkedSubject&&Array.isArray(linkedSubject.topics))?(linkedSubject.topics.find(t=>t[0]===latestStudy.topic)?.[1]||''):'';
+    const subject=subjectName(latestStudy.subject);
+    const title=topicName?`Recall ${topicName} without notes`:`Retrieve key ideas from your latest ${subject} session`;
+    add({title,subject:latestStudy.subject,type:'Active Recall',minutes:15,reason:`Your latest logged study session was ${subject}${topicName?' · '+topicName:''}. A short closed-book recall check helps test retention instead of just rereading.`});
+  }
 
-  el.innerHTML=`
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Subject</th>
-            <th>Component</th>
-            <th>Paper</th>
-            <th>Score</th>
-            <th>%</th>
-            <th></th>
-          </tr>
-        </thead>
+  if(!validPapers.length && (data.studies||[]).length){
+    const subject=latestStudy?latestStudy.subject:(data.studies||[])[0].subject;
+    add({title:`Try a short ${subjectName(subject)} exam question`,subject,type:'Exam Questions',minutes:20,reason:'You have study activity logged but no valid past-paper score yet. A short exam-style question gives ASTRAEA evidence about application, not just time spent.'});
+  }
+  if(!openMistakes.length && !validPapers.length && !(data.studies||[]).length){
+    add({title:'Log your first focused study session',subject:SUBJECTS[0]?.id||'',type:'Revision',minutes:30,reason:'Once you log a session, topic and method, ASTRAEA can start making more personalised suggestions.'});
+    add({title:'Record a past-paper attempt when ready',subject:SUBJECTS[0]?.id||'',type:'Past Paper',minutes:30,reason:'A recorded score and reflection help distinguish content gaps from exam-technique issues.'});
+  }
 
-        <tbody>
-          ${items.map(x=>{
-            const pct=Math.round(x.score/x.total*100);
+  const openTaskTitles=new Set((data.tasks||[]).filter(t=>!t.done).map(t=>String(t.title||'').toLowerCase()));
+  return suggestions.filter(x=>!openTaskTitles.has(x.title.toLowerCase())).slice(0,8);
+}
 
-            return `
-              <tr>
-                <td>${esc(subjectName(x.subject))}</td>
-                <td>${esc(x.component||"—")}</td>
-                <td>${x.year} · ${esc(x.session)}</td>
-                <td>${x.score}/${x.total}</td>
-                <td>
-                  <span class="badge ${pct>=80?"good":pct>=60?"warn":"bad"}">
-                    ${pct}%
-                  </span>
-                </td>
-                <td>
-                  <button class="btn" onclick="deletePaper('${x.id}')">×</button>
-                </td>
-              </tr>
-            `;
-          }).join("")}
-        </tbody>
-      </table>
-    </div>
-  `;
+function acceptAdaptiveSuggestion(index){
+  const suggestion=getAdaptiveSuggestions()[Number(index)];
+  if(!suggestion){toast('That suggestion has changed. Refresh the list and try again.');renderAdaptiveActions();return;}
+  if((data.tasks||[]).some(t=>!t.done&&String(t.title||'').toLowerCase()===suggestion.title.toLowerCase())){toast('That task is already on your dashboard.');renderAdaptiveActions();return;}
+  data.tasks.push({id:uid(),title:suggestion.title,subject:suggestion.subject||'',due:todayISO(),minutes:suggestion.minutes||25,type:suggestion.type||'Revision',done:false,created:new Date().toISOString(),source:'adaptive-action-engine'});
+  save();renderAll();toast('Suggestion added to your Task Dashboard ✦');
+}
+
+function renderAdaptiveActions(){
+  const list=document.getElementById('adaptiveActionList');
+  if(!list)return;
+  const openMistakes=(data.mistakes||[]).filter(m=>!m.fixed).length;
+  const validPapers=(data.papers||[]).filter(p=>Number(p.total)>0&&Number(p.score)>=0&&Number(p.score)<=Number(p.total)).length;
+  const suggestions=getAdaptiveSuggestions();
+  document.getElementById('actionOpenMistakes').textContent=openMistakes;
+  document.getElementById('actionPapersAnalysed').textContent=validPapers;
+  document.getElementById('actionSuggestionCount').textContent=suggestions.length;
+  if(!suggestions.length){list.innerHTML='<p class="muted">No new suggestions right now. Complete your open tasks or log another study session, paper result or mistake to refresh your recommendations.</p>';return;}
+  list.innerHTML=suggestions.map((x,i)=>`<div class="mission"><div style="min-width:0;flex:1"><h4>${esc(x.title)}</h4><p>${esc(subjectName(x.subject))} · ${esc(x.type)} · ${Number(x.minutes)||25} min</p><p style="margin-top:6px">${esc(x.reason)}</p></div><button class="btn primary" onclick="acceptAdaptiveSuggestion(${i})">Add to tasks</button></div>`).join('');
+}
+
+function createFlightOpportunity(){
+  const name=document.getElementById('flightName').value.trim();
+  if(!name){toast('Add an opportunity name first.');return;}
+  const link=document.getElementById('flightLink').value.trim();
+  if(link && !/^https?:\/\//i.test(link)){toast('Use a full official link beginning with https://');return;}
+  data.flightOpportunities=data.flightOpportunities||[];
+  data.flightOpportunities.push({id:uid(),type:document.getElementById('flightType').value,name,deadline:document.getElementById('flightDeadline').value,status:document.getElementById('flightStatus').value,link,notes:document.getElementById('flightNotes').value.trim(),created:todayISO()});
+  save();['flightName','flightDeadline','flightLink','flightNotes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('flightStatus').value='Researching';renderFlightDeck();toast('Opportunity saved ✦');
+}
+function deleteFlightOpportunity(id){data.flightOpportunities=(data.flightOpportunities||[]).filter(x=>x.id!==id);save();renderFlightDeck();}
+function createFlightAchievement(){
+  const name=document.getElementById('achievementName').value.trim();
+  if(!name){toast('Add an achievement or project name first.');return;}
+  data.flightAchievements=data.flightAchievements||[];
+  data.flightAchievements.push({id:uid(),name,date:document.getElementById('achievementDate').value||todayISO(),type:document.getElementById('achievementType').value,notes:document.getElementById('achievementNotes').value.trim()});
+  save();['achievementName','achievementDate','achievementNotes'].forEach(id=>document.getElementById(id).value='');renderFlightDeck();toast('Achievement archived ✦');
+}
+function deleteFlightAchievement(id){data.flightAchievements=(data.flightAchievements||[]).filter(x=>x.id!==id);save();renderFlightDeck();}
+function renderFlightDeck(){
+  const opps=data.flightOpportunities||[], achievements=data.flightAchievements||[], today=todayISO();
+  const upcoming=opps.filter(x=>x.deadline&&x.deadline>=today&&x.status!=='Not pursuing'&&x.status!=='Accepted').sort((a,b)=>a.deadline.localeCompare(b.deadline));
+  document.getElementById('flightOpportunityCount').textContent=opps.length;
+  document.getElementById('flightDeadlineCount').textContent=upcoming.length;
+  document.getElementById('flightAchievementCount').textContent=achievements.length;
+  document.getElementById('flightOpportunityList').innerHTML=opps.length?[...opps].sort((a,b)=>(a.deadline||'9999').localeCompare(b.deadline||'9999')).map(x=>`<div class="mission"><div><h4>${esc(x.name)} <span class="badge lav">${esc(x.type)}</span></h4><p>${esc(x.status)}${x.deadline?' · Deadline: '+esc(x.deadline):' · No deadline set'}</p>${x.notes?`<p style="margin-top:5px">${esc(x.notes)}</p>`:''}${x.link?`<p style="margin-top:5px"><a href="${esc(x.link)}" target="_blank" rel="noopener noreferrer">Open saved link ↗</a></p>`:''}</div><button class="btn" onclick="deleteFlightOpportunity('${x.id}')" aria-label="Delete opportunity">×</button></div>`).join(''):'<p class="muted">No opportunities saved yet.</p>';
+  document.getElementById('flightAchievementList').innerHTML=achievements.length?[...achievements].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(x=>`<div class="mission"><div><h4>${esc(x.name)} <span class="badge info">${esc(x.type)}</span></h4><p>${esc(x.date||'Date not set')}</p>${x.notes?`<p style="margin-top:5px">${esc(x.notes)}</p>`:''}</div><button class="btn" onclick="deleteFlightAchievement('${x.id}')" aria-label="Delete achievement">×</button></div>`).join(''):'<p class="muted">Your achievement archive is ready when you are.</p>';
 }
 
 
@@ -3141,7 +3621,7 @@ function createMistake(){
     title,
     correction:document.getElementById("mistakeCorrection").value,
     fixed:false,
-    topic:""
+    topic:document.getElementById("mistakeTopic").value || ""
   });
 
   save();
@@ -3217,6 +3697,7 @@ function renderMistakes(){
 
       <div class="mistake-meta">
         <span class="badge warn">${esc(x.category)}</span>
+        ${x.topic?`<span class="badge info">${esc(subject(x.subject)?.topics.find(t=>t[0]===x.topic)?.[1]||"Linked topic")}</span>`:""}
       </div>
 
       ${x.correction?`
@@ -3311,12 +3792,105 @@ function renderRoadmap(){
 }
 
 
+/* ---------- ADAPTIVE REVISION PLANNER ---------- */
+
+function adaptiveModeFor(item){
+  if(item.mistakes>0)return {mode:"Mistake Correction",why:"Resolve an open mistake and write the corrected method from memory."};
+  if(item.mastery<50)return {mode:"Active Recall",why:"Recall the core ideas without notes, then check and repair gaps."};
+  if(item.risk>=60)return {mode:"Spaced Retrieval",why:"Retrieve key ideas from memory to strengthen retention."};
+  if(item.paperAverage!==null && item.paperAverage<70)return {mode:"Exam Questions",why:"Apply the topic to exam-style questions and mark them strictly."};
+  return {mode:"Mixed Practice",why:"Combine a short recall check with targeted exam questions."};
+}
+
+function generateAdaptivePlan(){
+  const budget=Math.max(15,Number(document.getElementById("revisionBudget")?.value)||45);
+  const scores=allTopicScores().filter(x=>x.mastery<100 || x.risk>=45 || x.mistakes>0);
+  const chosen=scores.slice(0,Math.max(1,Math.min(4,Math.floor(budget/20))));
+  if(!chosen.length){toast("Add syllabus mastery or study evidence first.");return;}
+  const base=Math.floor(budget/chosen.length/5)*5;
+  let remaining=budget;
+  const items=chosen.map((item,index)=>{
+    const rec=adaptiveModeFor(item);
+    const minutes=index===chosen.length-1?remaining:Math.min(remaining,Math.max(15,base));
+    remaining-=minutes;
+    return {
+      id:uid(),subject:item.subject.id,topic:item.topic[0],topicName:item.topic[1],
+      minutes,mode:rec.mode,why:rec.why,priority:Math.round(item.priority),done:false
+    };
+  });
+  data.revisionPlan={date:todayISO(),budget,items};
+  save();
+  renderAether();
+  toast("Your adaptive revision plan is ready ✦");
+}
+
+function toggleRevisionItem(id){
+  if(!data.revisionPlan || data.revisionPlan.date!==todayISO())return;
+  const item=data.revisionPlan.items.find(x=>x.id===id);
+  if(!item)return;
+  item.done=!item.done;
+  save();
+  renderAether();
+}
+
+function renderAdaptivePlan(){
+  const el=document.getElementById("adaptiveRevisionPlan");
+  if(!el)return;
+  const plan=data.revisionPlan;
+  if(!plan || plan.date!==todayISO()){
+    el.innerHTML="<p class='muted'>Your plan will appear here. Choose a time budget and select <b>Build my plan</b> to turn AETHER's priorities into concrete revision blocks.</p>";
+    return;
+  }
+  const done=plan.items.filter(x=>x.done).length;
+  el.innerHTML=`
+    <div class="progress-row" style="margin-bottom:12px">
+      <div class="progress-meta"><span>Today's progress · ${done}/${plan.items.length} blocks complete</span><span>${Math.round(done/Math.max(1,plan.items.length)*100)}%</span></div>
+      <div class="progress"><div style="width:${done/Math.max(1,plan.items.length)*100}%"></div></div>
+    </div>
+    ${plan.items.map((x,i)=>`
+      <div class="mission" style="align-items:flex-start;opacity:${x.done?'.68':'1'}">
+        <div style="min-width:0;flex:1">
+          <h4>${x.done?'✓ ':`${i+1}. `}${esc(subjectName(x.subject))} — ${esc(x.topicName)}</h4>
+          <p>${x.minutes} min · ${esc(x.mode)} · ${esc(x.why)}</p>
+        </div>
+        <button class="btn ${x.done?'':'primary'}" onclick="toggleRevisionItem('${x.id}')">${x.done?'Undo':'Mark done'}</button>
+      </div>`).join("")}
+    <p class="muted" style="margin-top:10px">${plan.budget} minutes planned. Check off each block as you complete it; your progress is saved with ASTRAEA's data.</p>
+  `;
+}
+
 /* ---------- AETHER PAGE ---------- */
 
 function renderAether(){
 
   const scores=allTopicScores();
+  renderAdaptivePlan();
   const item=scores[0];
+  const queue=document.getElementById("studyIntelligenceQueue");
+  if(queue){
+    const top=scores.filter(x=>x.mastery<100 || x.risk>=60 || x.mistakes>0).slice(0,5);
+    queue.innerHTML=top.length?top.map((x,i)=>{
+      const signals=[];
+      if(x.mastery<50)signals.push("low mastery");
+      else if(x.mastery<75)signals.push("consolidate mastery");
+      if(x.risk>=60)signals.push("retention risk");
+      if(x.mistakes)signals.push(`${x.mistakes} open mistake${x.mistakes===1?"":"s"}`);
+      if(x.paperAverage!==null)signals.push(`subject paper average ${x.paperAverage}%`);
+      if(x.daysSinceReview!==null && x.daysSinceReview>=7)signals.push(`${x.daysSinceReview} days since review`);
+      if(!signals.length)signals.push("keep practising");
+      return `<div class="mission">
+        <div style="min-width:0;flex:1">
+          <h4>${i+1}. ${esc(x.subject.name)} — ${esc(x.topic[1])}</h4>
+          <p>${esc(signals.join(" · "))}</p>
+          <div class="progress-row" style="margin-top:8px">
+            <div class="progress-meta"><span>Mastery</span><span>${x.mastery}%</span></div>
+            <div class="progress"><div style="width:${x.mastery}%"></div></div>
+          </div>
+        </div>
+        <span class="badge ${x.priority>=65?"bad":x.priority>=40?"warn":"info"}">${Math.round(x.priority)}</span>
+      </div>`;
+    }).join(""):"<p class='muted'>No priority topics detected from the current records. Keep logging sessions and papers as you go.</p>";
+  }
 
   document.getElementById("aetherPriorityCount").textContent=
     scores.filter(x=>x.priority>=45).length;
@@ -3503,6 +4077,48 @@ function toast(message){
 }
 
 
+/* ---------- TWO-YEAR ACADEMIC JOURNEY ---------- */
+let journeySelectedYear=2027;
+
+function setJourneyYear(year){
+  journeySelectedYear=Number(year)===2028?2028:2027;
+  document.querySelectorAll('[data-journey-year]').forEach(button=>{
+    button.classList.toggle('active',Number(button.dataset.journeyYear)===journeySelectedYear);
+  });
+  renderJourney();
+}
+
+function renderJourney(){
+  const year=journeySelectedYear;
+  const inYear=(value)=>typeof value==='string' && value.slice(0,4)===String(year);
+  const exams=(Array.isArray(data.exams)?data.exams:[]).filter(x=>inYear(x.date));
+  const tasks=(Array.isArray(data.tasks)?data.tasks:[]).filter(x=>inYear(x.due));
+  const studies=(Array.isArray(data.studies)?data.studies:[]).filter(x=>inYear(x.date));
+  // Use the date a practice paper was logged, not the historical exam year printed on the paper.
+  const papers=(Array.isArray(data.papers)?data.papers:[]).filter(x=>inYear(x.date) && Number(x.total)>0 && Number(x.score)>=0 && Number(x.score)<=Number(x.total));
+  const totalMinutes=studies.reduce((sum,x)=>sum+Math.max(0,Number(x.minutes)||0),0);
+  const scored=papers.reduce((sum,x)=>sum+(Number(x.score)||0),0);
+  const possible=papers.reduce((sum,x)=>sum+(Number(x.total)||0),0);
+  const completion=tasks.length?Math.round(tasks.filter(x=>x.done).length/tasks.length*100):0;
+  const title=year===2027?'Grade 12 · 2027':'Grade 13 · 2028';
+  document.getElementById('journeyYearTitle').textContent=title;
+  document.getElementById('journeyYearBadge').textContent=year===2027?'FOUNDATION YEAR':'EXAM YEAR';
+  document.getElementById('journeyYearDescription').textContent=year===2027
+    ?'Build the foundations: understand the syllabus, establish routines and strengthen core skills.'
+    :'Consolidate your knowledge, sharpen exam technique and prepare for final assessments.';
+  document.getElementById('journeyExams').textContent=exams.length;
+  document.getElementById('journeyTasks').textContent=`${tasks.filter(x=>x.done).length}/${tasks.length}`;
+  document.getElementById('journeyStudy').textContent=`${Math.floor(totalMinutes/60)}h${totalMinutes%60?` ${totalMinutes%60}m`:''}`;
+  document.getElementById('journeyPapers').textContent=papers.length;
+  document.getElementById('journeyPaperAverage').textContent=possible?`${Math.round(scored/possible*100)}%`:'—';
+  let focus='Start logging missions, study sessions and practice papers to build a useful progress record.';
+  if(tasks.length && completion<50)focus=`Prioritise completing open missions: ${tasks.length-tasks.filter(x=>x.done).length} of ${tasks.length} dated missions remain open in ${year}.`;
+  else if(studies.length===0)focus=`No study sessions have been logged for ${year} yet. Log sessions to make your workload visible.`;
+  else if(papers.length===0)focus=`You have ${Math.floor(totalMinutes/60)}h ${totalMinutes%60}m of logged study, but no valid practice-paper scores recorded in ${year} yet.`;
+  else focus=`You have logged ${papers.length} practice paper${papers.length===1?'':'s'} and ${Math.floor(totalMinutes/60)}h ${totalMinutes%60}m of study in ${year}. Use the paper reflections and Mistake Vault to decide what to improve next.`;
+  document.getElementById('journeyFocus').textContent=focus;
+}
+
 /* ---------- RENDER ---------- */
 
 function renderAll(){
@@ -3510,12 +4126,16 @@ function renderAll(){
   populateSelects();
 
   renderDashboard();
+  renderJourney();
   renderTaskDashboard();
   renderSyllabus();
   renderExams();
   renderHomework();
   renderStudy();
   renderPapers();
+  renderWeeklyBriefing();
+  renderAdaptiveActions();
+  renderFlightDeck();
   renderMistakes();
   renderAether();
   renderAnalytics();
