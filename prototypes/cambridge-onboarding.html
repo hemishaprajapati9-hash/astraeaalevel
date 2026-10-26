@@ -69,7 +69,41 @@
  document.querySelectorAll("[data-level]").forEach(b=>b.addEventListener("click",()=>chooseLevel(b.dataset.level)));
  $("addSubject").addEventListener("click",()=>{let name=$("customSubject").value.trim(),code=$("customCode").value.trim();if(!name){$("customSubject").focus();return;}if(subjects.some(s=>s.name.toLowerCase()===name.toLowerCase())){ $("customSubject").value="";return;}subjects.push({name,code});$("customSubject").value="";$("customCode").value="";renderSubjects();});
  $("backBtn").addEventListener("click",()=>{if(step>1){step--;updateSteps();}});
- $("nextBtn").addEventListener("click",()=>{if(step===1){if(!level){alert("Choose your Cambridge qualification first.");return;}if(!$("examSession").value){alert("Choose an examination session or select Not decided yet.");return;}step=2;updateSteps();return;}if(step===2){if(!subjects.length){alert("Select at least one subject to continue.");return;}step=3;updateSteps();return;}const profile={schemaVersion:1,provider:"Cambridge International",qualification:level,examSession:$("examSession").value,country:$("country").value.trim(),subjects:subjects.map(s=>({...s})),createdAt:new Date().toISOString(),setupStatus:"prototype"};try{localStorage.setItem("astraea_global_profile_prototype",JSON.stringify(profile));saved=true;$("saveStatus").textContent="Profile saved in this browser. Export a copy below if you want to keep the prototype data.";let old=document.getElementById("exportBtn");if(!old){old=document.createElement("button");old.id="exportBtn";old.className="btn";old.type="button";old.textContent="Export profile JSON";old.style.marginTop="12px";old.addEventListener("click",()=>{const blob=new Blob([JSON.stringify(profile,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="astraea-profile-prototype.json";a.click();URL.revokeObjectURL(url);});$("saveStatus").after(old);}}catch(e){$("saveStatus").textContent="This browser couldn't save the profile. You can still review your choices.";}}});
+  $("nextBtn").addEventListener("click", () => {
+    if (step === 1) {
+      if (!level) { alert("Choose your Cambridge qualification first."); return; }
+      if (!$("examSession").value) { alert("Choose an examination session or select Not decided yet."); return; }
+      step = 2; updateSteps(); return;
+    }
+    if (step === 2) {
+      if (!subjects.length) { alert("Select at least one subject to continue."); return; }
+      step = 3; updateSteps(); return;
+    }
+    const profile = {
+      schemaVersion: 1, provider: "Cambridge International", qualification: level,
+      examSession: $("examSession").value, country: $("country").value.trim(),
+      subjects: subjects.map(s => ({ ...s })), createdAt: new Date().toISOString(),
+      setupStatus: "prototype"
+    };
+    try {
+      localStorage.setItem("astraea_global_profile_prototype", JSON.stringify(profile));
+      saved = true;
+      $("saveStatus").textContent = "Profile saved in this browser. Export a copy below if you want to keep the prototype data.";
+      let old = document.getElementById("exportBtn");
+      if (!old) {
+        old = document.createElement("button"); old.id = "exportBtn"; old.className = "btn";
+        old.type = "button"; old.textContent = "Export profile JSON"; old.style.marginTop = "12px";
+        old.addEventListener("click", () => {
+          const blob = new Blob([JSON.stringify(profile, null, 2)], { type: "application/json" });
+          const url = URL.createObjectURL(blob); const a = document.createElement("a");
+          a.href = url; a.download = "astraea-profile-prototype.json"; a.click(); URL.revokeObjectURL(url);
+        });
+        $("saveStatus").after(old);
+      }
+    } catch (e) {
+      $("saveStatus").textContent = "This browser couldn't save the profile. You can still review your choices.";
+    }
+  });
  // Restore prototype progress only; never touches ASTRAEA's existing app data.
  try{const raw=localStorage.getItem("astraea_global_profile_prototype");if(raw){const p=JSON.parse(raw);if(p&&p.provider==="Cambridge International"){chooseLevel(p.qualification);$("examSession").value=p.examSession||"";$("country").value=p.country||"";subjects=Array.isArray(p.subjects)?p.subjects:[];}}}catch(e){}
  updateSteps();
